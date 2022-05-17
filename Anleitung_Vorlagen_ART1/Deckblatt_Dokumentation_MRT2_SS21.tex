@@ -1,0 +1,102 @@
+%;; -*- mode:latex-mode -*-
+% Author: M.Herhold
+% Version: 0.3
+
+\documentclass[oneside,a4paper,12pt]{article}
+\thispagestyle{empty}
+
+\usepackage{german}
+\usepackage{changepage}
+\usepackage[utf8]{inputenc}
+\usepackage{tabularx} % verbesserte Tabellen
+\usepackage[normalem]{ulem} % Text durchstreichen
+
+\usepackage[default,scale=1.0]{opensans} %% Offizielle TU-DD Schriftart
+\usepackage[T1]{fontenc}
+
+% Einrückungen bei nächster Zeile verhindern
+\parindent0pt
+\setlength{\parindent}{0pt} 
+\setlength{\parskip}{\baselineskip}
+
+%%%%%%%%%%%
+% folgende Zeilen bitte ausfüllen:
+%
+
+\def\Betreuer{Betreuernamen bitte hier eintragen!}
+\def\Gruppennummer{ ??  }
+\def\DatumDerDurchführung{Datum hier}
+
+% durchgeführten Versuch bitte mit einem 'X' markieren
+\def\VersuchTuersteuerung{X} %       ART-1
+\def\VersuchEchtzeitsteuerung{ } %   ART-2
+\def\VersuchFuellstandsteuerung{ } % ART-3
+
+% bitte die Namen der Studenten der Gruppe eintragen (keine Matrikelnummern)
+% Namensfeld einfach leer lassen, wenn weniger Mitglieder in der Gruppe sind.
+\def\StudentEins{Bitte 1. Namen hier eintragen!}
+\def\StudentZwei{Bitte 2. Namen hier eintragen!}
+\def\StudentDrei{Bitte 3. Namen hier eintragen!}
+\def\StudentVier{Bitte 4. Namen hier eintragen!}
+
+%
+% keine Änderungen ab hier notwendig
+%%%%%%%%%%%
+
+%
+% change code below only if you know what you are doing!
+% Feedback and code improvements are very welcome.
+% mail to M.Herhold, TU-Dresden, Institute of Automation
+%
+\begin{document}
+
+\begin{center}
+    {\Huge \textbf{Praktikumsdokumentation}\\}
+    \bigskip
+    {\Large Mikrorechentechnik II}\\
+\end{center}
+
+\vfill
+
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{p{2cm} p{0.3cm} p{1.5cm} X}
+    \textbf{Versuch:} & \VersuchTuersteuerung & \ ART-1 & Türsteuerung\\ \cline{2-2}
+    & \VersuchEchtzeitsteuerung & \ \sout{ART-2} & \sout{Echtzeitsteuerung}\\ \cline{2-2}
+    & \VersuchFuellstandsteuerung & \ ART-3 & Füllstandsteuerung\\ \cline{2-2}
+\end{tabularx}
+
+\bigskip
+
+\begin{tabularx}{\textwidth}{p{2cm} X}
+  \textbf{Betreuer:} & \Betreuer \\ \cline{2-2}
+\end{tabularx}
+
+\begin{tabularx}{\textwidth}{p{2cm} p{0.38cm} X p{2.2cm}}
+    \textbf{Gruppe:} & \Gruppennummer & \hfill \textbf{Datum} {\small der Praktikumsdurchführung}\textbf{:} & \DatumDerDurchführung \\
+  \cline{2-2} \cline{4-4}
+\end{tabularx}
+
+\vfill
+
+\renewcommand{\arraystretch}{3}
+\rule{\textwidth}{0.5mm}
+\begin{tabularx}{\textwidth}{p{4.2cm} | p{0.5cm} X p{0.5cm}}
+  & & \StudentEins & \\ \cline{3-3}
+  \textbf{Gruppenmitglieder:} & & \StudentZwei & \\  \cline{3-3}
+  & & \StudentDrei & \\  \cline{3-3}
+  & & \StudentVier & \\  \cline{3-3}
+%  &\\
+\end{tabularx}
+
+\vfill
+\renewcommand{\arraystretch}{1}
+Informationen zur Abgabe des Protokolls:\\[0.4cm]
+{\small
+    \begin{tabularx}{\textwidth}{p{2.5cm} X}
+      Termin:           & zwei Wochen nach Praktikumsdurchführung\\
+      Art \& Weise:     & als PDF-Dokument per E-Mail an\\
+                        & mario.herhold ( ä ) tu-dresden.de\\
+    \end{tabularx}}
+
+\end{document}
+
