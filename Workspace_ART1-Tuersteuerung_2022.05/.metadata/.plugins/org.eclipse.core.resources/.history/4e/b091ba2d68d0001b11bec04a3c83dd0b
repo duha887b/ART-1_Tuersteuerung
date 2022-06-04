@@ -1,0 +1,14 @@
+#include "DoorControl.h"
+
+/* If "show_ui" of class DoorInterface is active use "External Tools" -> run in xterm"
+ * to execute from Eclipse IDE */
+int main (int argc, char *argv[])
+{
+	// ... insert your class initialization here
+	// example:
+
+	DoorControl control;
+	control.run();
+
+	return 0;
+}
