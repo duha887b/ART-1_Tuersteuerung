@@ -23,6 +23,7 @@ DoorControl::~DoorControl()
 	door_if.quit_doorcontrol_flag = true;
 }
 // asdfasdfasdfasdfasdfadsaf
+//anderer Kommentarfgf
 void DoorControl::run()
 {
 	// ... insert your main loop here ...
