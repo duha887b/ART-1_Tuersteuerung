@@ -1,0 +1,117 @@
+@startuml
+class DoorInterface{
+
+
+const bool real_door
+const bool show_ui
+
+std::thread ui_thread
+char debug_string[100]
+
+struct usb_device *dev
+struct usb_dev_handle *handle
+
+int channels
+int sim_channels
+
+void HandleSimUI(void)
+void InitNcurses(void)
+void ShowSimUI(void)
+void HandleSimInput(int c)
+
+void DebugString(const std::string s)
+void DIO_Write(const unsigned port, const unsigned char pins)
+void DIO_Read(const unsigned port, unsigned char *pins)
+
+ * TODO aufteilen auf mehrere Klassen um Oberfläche, Simulator und Hardware-Interface klar zu trennen
+ * TODO Interrupt-Timer implementieren
+
+}
+
+class DoorControl {
+
+DoorInterface door_if
+
+void run()
+*TODO insert your main loop here ...
+
+*TODO maybe, insert your sensor and actor initialization here?
+
+}
+ class ConfigHandler_Singelton {
+
+HardwareElement[] elemente
+
+
+}
+
+class HardwareElement{
+
+bool state
+unsigned int pin
+
+bool getState()
+
+
+}
+
+class Sensor {
+
+bool opMode
+
+bool getOpMode
+
+}
+
+class Aktor{
+
+void setState()
+
+}
+
+
+class Automat {
+
+state currentState
+
+void step()
+
+
+}
+
+class AutomatElement{
+
+}
+
+class State{
+
+}
+
+class Transition{
+
+}
+
+
+DoorInterface <|-- DoorControl
+AutomatElement <|-- Automat
+AutomatElement <|-- State
+AutomatElement <|-- Transition
+HardwareElement <|-- Sensor
+HardwareElement <|-- Aktor
+
+DoorControl ..|> Automat
+DoorControl ..|> AutomatElement
+DoorControl ..|> ConfigHandler_Singelton
+ConfigHandler_Singelton ..|> HardwareElement
+
+
+
+
+
+
+
+
+@enduml
+
+
+
