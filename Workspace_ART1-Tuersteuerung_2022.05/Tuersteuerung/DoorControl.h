@@ -7,7 +7,6 @@
  * Autor: M.Herhold
  * Version: r3
  */
-
 #ifndef DOORCONTROL_HH
 #define DOORCONTROL_HH
 
@@ -19,7 +18,6 @@ class DoorControl {
 public:
 	DoorControl();
 	~DoorControl();
-	
 	void run();
 private:
 	DoorInterface door_if;
