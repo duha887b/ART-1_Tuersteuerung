@@ -30,3 +30,6 @@ Dustin Hanusch, Ivo Pavlov
 
 ## Klassendiagramm
 ![Klassendiagramm](UML/ClassDiagram.png )
+
+## Automaten
+![Betriebsauswahl](UML/Automat_Betriebsauswahl.png)
