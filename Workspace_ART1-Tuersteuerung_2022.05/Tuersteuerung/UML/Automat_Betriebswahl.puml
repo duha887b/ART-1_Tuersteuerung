@@ -1,15 +1,15 @@
 @startuml
 hide empty description
 
-[*] --> Ausgeschsltet
-Ausgeschsltet  -down-> Reperatur : <!BW1;BW2>
-Ausgeschsltet  -down-> Automatik : <BW1;BW2>
-Ausgeschsltet  -down-> Handbetrieb : <BW1;!BW2>
+[*] --> Ausgeschaltet
+Ausgeschaltet  -right-> Reperatur : <!BW1;BW2>
+Ausgeschaltet  -down-> Automatik : <BW1;BW2>
+Ausgeschaltet  -down-> Handbetrieb : <BW1;!BW2>
 
 
-Ausgeschsltet  <- Reperatur : <!BW1;!BW2>
-Ausgeschsltet  <- Handbetrieb : <!BW1;!BW2>
-Ausgeschsltet  <- Automatik : <!BW1;!BW2>
+Ausgeschaltet  <- Reperatur : <!BW1;!BW2>
+Ausgeschaltet  <- Handbetrieb : <!BW1;!BW2>
+Ausgeschaltet  <- Automatik : <!BW1;!BW2>
 
 Reperatur --> Automatik : <BW1;BW2>
 Reperatur -left-> Handbetrieb : <BW1;!BW2>
