@@ -34,3 +34,5 @@ Dustin Hanusch, Ivo Pavlov
 ## Automaten
 ![Betriebsauswahl](UML/Automat_Betriebsauswahl.png)
 ![Automatik](UML/Automat_Automatik.png)
+![Handbetrieb](UML/Automat_Handbetrieb.png)
+![Reperaturmodus](UML/Automat_Reperatur.png)

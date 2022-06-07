@@ -1,0 +1,36 @@
+@startuml
+
+ZU: <!Y1,!Y2>
+AUF: <!Y1,!Y2>
+öffnen: <Y1,!Y2>
+schließen: <!Y1,Y2>
+STOP : <!Y1,!Y2>
+Init : <!Y1,!Y2>
+
+[*] --> Init : Handbetrieb
+Init --> ZU :ELG
+Init --> STOP : !ELO && !ELG
+Init -> AUF : ELO
+
+ZU ---> öffnen : NTA
+
+öffnen --> schließen : NTZ
+öffnen --> STOP : !NTA && !NTZ
+öffnen --> AUF : ELO
+öffnen --> öffnen : NTA
+
+schließen --> öffnen : NTA
+schließen -left-> ZU : ELG
+schließen --> STOP : !NTZ && !NTA
+schließen --> schließen : NTZ
+
+AUF --> schließen : NTZ
+
+STOP --> schließen : NTZ
+STOP --> öffnen : NTA
+STOP --> STOP : (!NTA && !NTZ) ||\n(NTA && NTZ)
+
+
+
+
+@enduml
