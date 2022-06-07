@@ -1,0 +1,26 @@
+@startuml
+hide empty description
+
+Init : 5s LED ON \n <!Y1,!Y2>
+ZU: <!Y1,!Y2>
+AUF: <!Y1,!Y2>
+öffnen: <Y1,!Y2>
+schließen: <!Y1,Y2>
+
+[*]--> Init :Automatikmodus
+Init --> ZU : ELG
+Init --> AUF : ELO
+Init --> öffnen : !ELO && !ELG
+
+ZU --> öffnen : NTA || LSA || LSV || BM
+
+öffnen --> schließen : NTZ
+öffnen --> AUF : ELO
+
+schließen --> ZU : ELG
+schließen --> öffnen :  NTA || LSA || LSV || BM
+
+AUF --> AUF : NTA || LSA || LSV || BM
+AUF --> schließen : (NTZ && (!NTA && !LSA && !LSV && !BM) \n || \n Zeit (3s) abgelaufen
+
+@enduml
