@@ -2,7 +2,7 @@
 
 /* Das Programm in Eclipse mittels des Menüeintrags:
  * "Run -> External Tools" -> run in xterm"
- * starten! */
+ * starten!*/
 int main (int argc, char *argv[])
 {
 	// ... maybe insert your class initialization here?

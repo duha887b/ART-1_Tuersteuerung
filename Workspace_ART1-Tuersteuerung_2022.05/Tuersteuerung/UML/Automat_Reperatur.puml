@@ -1,0 +1,33 @@
+@startuml
+
+ZU: <!Y1,!Y2,!Y3>
+AUF: <!Y1,!Y2,!Y3>
+öffnen: <Y1,!Y2,Y3>
+schließen: <!Y1,Y2,Y3>
+STOP : <!Y1,!Y2,!Y3>
+Init : <!Y1,!Y2,!Y3>
+
+[*] --> Init : Reperaturmodus
+Init --> ZU : ELG
+Init --> AUF : ELO
+Init -right-> STOP : !ELO && !ELG
+
+ZU --> öffnen : !NTZ &&\n (NTA || LSH || LSV || BW)
+
+öffnen --> STOP : !NTZ && !NTA && !LSH &&\n !LSV && !BW
+öffnen --> schließen : NTZ && !NTA && !LSH &&\n !LSV && !BW
+öffnen --> AUF : ELO
+
+schließen --> ZU : ELG
+schließen --> STOP : !NTZ
+schließen --> öffnen : !NTZ &&\n (NTA || LSH || LSV || BW)
+
+AUF --> schließen : NTZ && !NTA &&\n !LSH && !LSV && !BW
+
+STOP --> STOP : NTZ &&\n (NTA || LSH || LSV || BW)
+STOP --> schließen : NTZ && !NTA &&\n !LSH && !LSV && !BW
+STOP --> öffnen : !NTZ &&\n (NTA || LSH || LSV || BW)
+
+
+
+@enduml
