@@ -33,6 +33,9 @@ CC_FILES = \
 	State.cpp \
 	Automat.cpp \
 	Transition.cpp \
+	Sensor.cpp \
+	HardwareElement.cpp \
+	Aktor.cpp \
 	main.cpp
 
 # in diese Variable gehören alle zu kompilierenden C++-Header-Dateien
@@ -45,7 +48,10 @@ HH_FILES = \
 	Behaviour.h \
 	State.h \
 	Automat.h \
-	Transition.h
+	Transition.h \
+	Sensor.h \
+	aktor.h \
+	HardwareElement.h
 
 
 # in diese Variable gehören alle zu kompilierenden C-Quellcode-Dateien
