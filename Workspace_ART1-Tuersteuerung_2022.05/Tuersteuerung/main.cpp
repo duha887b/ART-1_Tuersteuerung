@@ -1,6 +1,5 @@
 #include "DoorControl.h"
 #include <fstream>
-#include "test.h"
 #include "iostream"
 
 /* Das Programm in Eclipse mittels des Menüeintrags:
