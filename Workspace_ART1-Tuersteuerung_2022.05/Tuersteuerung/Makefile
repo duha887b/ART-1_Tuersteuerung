@@ -30,6 +30,9 @@ CC_FILES = \
 	HardwareInterface.cpp \
 	Simulator.cpp \
 	UserInterface.cpp \
+	State.cpp \
+	Automat.cpp \
+	Transition.cpp \
 	main.cpp
 
 # in diese Variable gehören alle zu kompilierenden C++-Header-Dateien
@@ -38,7 +41,11 @@ HH_FILES = \
 	DoorControl.h \
 	HardwareInterface.h \
 	Simulator.h \
-	UserInterface.h
+	UserInterface.h \
+	Behaviour.h \
+	State.h \
+	Automat.h \
+	Transition.h
 
 
 # in diese Variable gehören alle zu kompilierenden C-Quellcode-Dateien
