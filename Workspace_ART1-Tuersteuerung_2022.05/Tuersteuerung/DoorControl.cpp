@@ -97,6 +97,8 @@ void DoorControl::run()
 		// set current message to be displayed by user interface
 		door_if.DebugString(msg);
 
+
+
 		// wait some time
 		usleep(delay_ms * 1000);
         tm++;
@@ -272,7 +274,7 @@ void DoorControl::r_oeffnen(){
     //Y3
 }
 
-void DoorControl::iniHandbetrieb() {
+Automat* DoorControl::iniAutomatik() {
     State Init(&a_enterInit,&MotorOf,&defaultFunc);
     State Zu(&MotorOf,&MotorOf,&defaultFunc);
     State Auf(&MotorOf,&MotorOf,&defaultFunc);
@@ -301,11 +303,59 @@ void DoorControl::iniHandbetrieb() {
     trlist_automatik.push_back(tr8);
     trlist_automatik.push_back(tr9);
 
-    Automat auto_Automatik(trlist_automatik,&Init)
+    Automat auto_Automatik(trlist_automatik,&Init);
+
+    return &auto_Automatik;
 
 }
-void DoorControl::iniReparaturmodus() {
+Automat* DoorControl::iniHandbetrieb() {
+    State Init(&d_AktorenOf,&d_AktorenOf,&defaultFunc);
+    State Zu(&MotorOf,&MotorOf,&defaultFunc);
+    State Auf(&MotorOf,&MotorOf,&defaultFunc);
+    State Oeffnen(&doorOpen,&doorOpen,&defaultFunc);
+    State Schliessen(&doorClose,&doorClose,&defaultFunc);
+    State Stop(&MotorOf,&MotorOf,&defaultFunc);
+
+    Transition tr0(&Init,&Zu,&d_ELG);
+    Transition tr1(&Init,&Auf,&d_ELO);
+    Transition tr2(&Init,&Stop,&d_notEloElg);
+    Transition tr3(&Zu,&Oeffnen,&d_NTA);
+    Transition tr4(&Oeffnen,&Auf,&d_ELO);
+    Transition tr5(&Oeffnen,&Stop,&d_notNtaNtz);
+    Transition tr6(&Oeffnen,&Oeffnen,&d_NTA);
+    Transition tr7(&Oeffnen,&Schliessen,&d_NTZ);
+    Transition tr8(&Schliessen,&Oeffnen,&d_NTA);
+    Transition tr9(&Schliessen,&Schliessen,&d_NTZ);
+    Transition tr10(&Schliessen,&Zu,&d_ELG);
+    Transition tr11(&Auf,&Schliessen,&d_NTZ);
+    Transition tr12(&Schliessen,&Stop,&d_notNtaNtz);
+    Transition tr13(&Stop,&Schliessen,&d_NTZ);
+    Transition tr14(&Stop,&Oeffnen,&d_NTA);
+    Transition tr15(&Stop,&Stop,&h_Stop_Stop);
+
+
+    trlist_handbetrieb.push_back(tr0);
+    trlist_handbetrieb.push_back(tr1);
+    trlist_handbetrieb.push_back(tr2);
+    trlist_handbetrieb.push_back(tr3);
+    trlist_handbetrieb.push_back(tr4);
+    trlist_handbetrieb.push_back(tr5);
+    trlist_handbetrieb.push_back(tr6);
+    trlist_handbetrieb.push_back(tr7);
+    trlist_handbetrieb.push_back(tr8);
+    trlist_handbetrieb.push_back(tr9);
+    trlist_handbetrieb.push_back(tr10);
+    trlist_handbetrieb.push_back(tr11);
+    trlist_handbetrieb.push_back(tr12);
+    trlist_handbetrieb.push_back(tr13);
+    trlist_handbetrieb.push_back(tr14);
+    trlist_handbetrieb.push_back(tr15);
+
+
+    Automat auto_Handbetrieb(trlist_handbetrieb,&Init);
+
+    return &auto_Handbetrieb;
 }
-void DoorControl::iniAutomatik() {
+void DoorControl::iniReparaturmodus() {
 }
 S
