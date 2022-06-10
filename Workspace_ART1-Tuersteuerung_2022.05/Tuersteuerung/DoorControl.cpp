@@ -78,11 +78,20 @@ void DoorControl::run()
 
         updateHardwareElements();
 
+        // Betriebsmodus auswahl //TODO BW1,2 ansprechen
+        //00 Aus
+        //10 Handbetrieb
+        //01 Reparatur
+        //11 Automatik
+
+        //TODO if clause Auswahl der Modi
+
+
 		//construct counter message
 		msg = "press 'q' to quit ";
 		msg += std::to_string((int)((delay_ms*tm)/1000));
 		msg += " seconds ";
-
+/*
         msg+= std::to_string(BW1.getState());
         msg+= std::to_string(BW2.getState());
         msg+= std::to_string(NTA.getState());
@@ -93,7 +102,7 @@ void DoorControl::run()
         msg+= std::to_string(LSH.getState());
         msg+= std::to_string(LSV.getState());
         msg+= std::to_string(BM.getState());
-
+*/
 		// set current message to be displayed by user interface
 		door_if.DebugString(msg);
 
@@ -108,7 +117,8 @@ void DoorControl::run()
 void DoorControl::updateHardwareElements(){
 
 
-
+//TODO Tobi anpassen der instanzen Harware Element
+//TODO if clause HardwareInterface oder Simulatior --> door_if
 
     door_if.DIO_Read(0,&port0);
     door_if.DIO_Read(1,&port1);
@@ -154,6 +164,7 @@ void DoorControl::updateHardwareElements(){
 
 
 //default Autommaten State-Function
+//TODO pseudocode übersetzen tobi fehtl
 
 void DoorControl::defaultFunc(){}
 
