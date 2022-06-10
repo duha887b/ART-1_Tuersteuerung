@@ -6,9 +6,16 @@
 #define CONFIG_HANDLER_HH
 
 class config_handler {
-    public:
-        config_handler();
-        void run()
+
+public:
+    void run();
+    static config_handler& get_instance();
+    config_handler();
+
+private:
+
+    //~config_handler();
+
 };
 
 #endif // CONFIG_HANDLER_HH
