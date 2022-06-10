@@ -12,6 +12,8 @@ public:
     ~HardwareElement();
     virtual bool getState();
     void setState(bool pin);
+    unsigned int getPort();
+    unsigned int getPin();
 
 protected:
     bool state;

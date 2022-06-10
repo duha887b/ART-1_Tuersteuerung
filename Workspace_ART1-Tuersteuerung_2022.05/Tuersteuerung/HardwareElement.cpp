@@ -17,11 +17,20 @@ HardwareElement::~HardwareElement(){
 }
 
 bool HardwareElement::getState(){
-    std::cout << "nicht überladen" << std::endl;
+    //std::cout << "nicht überladen" << std::endl;
+
     return state;
 }
 
 void HardwareElement::setState(bool pin) {
     state = pin;
 
+}
+
+unsigned int HardwareElement::getPort(){
+    return port;
+
+}
+unsigned int HardwareElement::getPin(){
+    return pin;
 }
