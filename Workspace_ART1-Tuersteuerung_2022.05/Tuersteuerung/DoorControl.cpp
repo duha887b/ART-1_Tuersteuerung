@@ -13,12 +13,15 @@
 #include "Sensor.h"
 #include "Aktor.h"
 #include "Simulator.h"
-
+#include "Automat.h"
+#include "State.h"
+#include "Transition.h"
 
 
 
 
 DoorControl::DoorControl() : door_if( true) ,
+                            opMode(0),
                             BW1(0,0, false,false),
                             BW2(0,1, false,true),
                             NTA(0,2, false,true),
@@ -40,6 +43,7 @@ DoorControl::DoorControl() : door_if( true) ,
 	// ... maybe, insert your sensor and actor initialization here?
 
     //Temp ini später durch config handler
+
 
 
 
@@ -152,7 +156,7 @@ void DoorControl::turnOff(){
 void DoorControl::iniHandbetrieb(){
 
 }
-void DoorControl::iniReperatur(){
+void DoorControl::iniReparatur(){
 
 }
 
@@ -168,7 +172,7 @@ void DoorControl::stepHandbetrieb(){
 
 }
 
-void DoorControl::stepReperatur(){
+void DoorControl::stepReparatur(){
 
 }
 

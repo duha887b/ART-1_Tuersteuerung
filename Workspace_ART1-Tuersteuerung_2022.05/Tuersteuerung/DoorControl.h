@@ -17,6 +17,7 @@
 #include "Automat.h"
 #include "State.h"
 #include "Transition.h"
+#include <iostream>
 
 
 class DoorControl {
@@ -28,11 +29,11 @@ private:
 
     void updateHardwareElements();
     void iniHandbetrieb();
-    void iniReperatur();
+    void iniReparatur();
     void iniAutomatik();
     void switchStepAutomat();
     void stepHandbetrieb();
-    void stepReperatur();
+    void stepReparatur();
     void stepAutomatik();
     void turnOff();
 
@@ -57,6 +58,17 @@ private:
     unsigned char port0;
     unsigned char port1;
     unsigned char port2 = 0;
+
+
+/*
+    Automat handbetrieb;
+    Automat reparatur;
+    Automat automatik;
+*/
+    std::list<Transition*>trlist_handbetrieb;
+    std::list<Transition*>trlist_reperatur;
+    std::list<Transition*>trlist_automatik;
+
 
 };
 
