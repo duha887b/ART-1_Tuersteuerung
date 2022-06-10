@@ -259,7 +259,7 @@ bool DoorControl::r_allNotNTZ(){
 }
 
 bool DoorControl::r_NTZ_notAll(){
-    return ;//NTZ && !NTA && !LSH &&\n !LSV && !BW
+    return ;//NTZ && !NTA && !LSH && !LSV && !BW
 }
 
 //2. State function
@@ -327,8 +327,8 @@ Automat* DoorControl::iniHandbetrieb() {
     Transition tr8(&Schliessen,&Oeffnen,&d_NTA);
     Transition tr9(&Schliessen,&Schliessen,&d_NTZ);
     Transition tr10(&Schliessen,&Zu,&d_ELG);
-    Transition tr11(&Auf,&Schliessen,&d_NTZ);
     Transition tr12(&Schliessen,&Stop,&d_notNtaNtz);
+    Transition tr11(&Auf,&Schliessen,&d_NTZ);
     Transition tr13(&Stop,&Schliessen,&d_NTZ);
     Transition tr14(&Stop,&Oeffnen,&d_NTA);
     Transition tr15(&Stop,&Stop,&h_Stop_Stop);
@@ -356,6 +356,42 @@ Automat* DoorControl::iniHandbetrieb() {
 
     return &auto_Handbetrieb;
 }
-void DoorControl::iniReparaturmodus() {
+Automat* DoorControl::iniReparaturmodus() {
+    State Init(&d_AktorenOf,&d_AktorenOf,&defaultFunc);
+    State Zu(&d_AktorenOf,&d_AktorenOf,&defaultFunc);
+    State Auf(&d_AktorenOf,&d_AktorenOf,&defaultFunc);
+    State Oeffnen(&r_oeffnen,&r_oeffnen,&defaultFunc);
+    State Schliessen(&r_schliessen,&r_schliessen,&defaultFunc);
+    State Stop(&d_AktorenOf,&d_AktorenOf,&defaultFunc);
+
+    Transition tr0(&Init,&Stop,&d_notEloElg);
+    Transition tr2(&Init,&Auf,&d_ELO);
+    Transition tr3(&Init,&Zu,&d_ELG);
+    Transition tr4(&Stop,&Schliessen,&r_NTZ_notAll);
+    Transition tr5(&Stop,&Stop,&r_Stop_Stop);
+    Transition tr6(&Oeffnen,&Stop,&r_oeffnen_Stop);
+    Transition tr7(&Oeffnen,&Schliessen,&r_NTZ_notAll);
+    Transition tr8(&Oeffnen,&Auf,&d_ELO);
+    Transition tr9(&Auf,&Schliessen,&r_NTZ_notAll);
+    Transition tr10(&Schliessen,&Zu,&d_ELG);
+    Transition tr11(&Schliessen,&Oeffnen,&r_allNotNTZ);
+    Transition tr12(&Schliessen,&Stop,&r_notNTZ);
+    Transition tr13(&Stop,&Stop,&r_Stop_Stop);
+
+    trlist_reperatur.push_back(tr0);
+    trlist_reperatur.push_back(tr1);
+    trlist_reperatur.push_back(tr2);
+    trlist_reperatur.push_back(tr3);
+    trlist_reperatur.push_back(tr4);
+    trlist_reperatur.push_back(tr5);
+    trlist_reperatur.push_back(tr6);
+    trlist_reperatur.push_back(tr7);
+    trlist_reperatur.push_back(tr8);
+    trlist_reperatur.push_back(tr9);
+    trlist_reperatur.push_back(tr10);
+    trlist_reperatur.push_back(tr11);
+    trlist_reperatur.push_back(tr12);
+    trlist_reperatur.push_back(tr13);
+
+    Automat auto_Reperaturmodus(trlist_reperatur,&Init);
 }
-S
