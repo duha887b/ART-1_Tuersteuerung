@@ -28,15 +28,6 @@ public:
 private:
 
     void updateHardwareElements();
-    void iniHandbetrieb();
-    void iniReparatur();
-    void iniAutomatik();
-    void switchStepAutomat();
-    void stepHandbetrieb();
-    void stepReparatur();
-    void stepAutomatik();
-    void turnOff();
-
 	Simulator door_if;
     Sensor BW1;
     Sensor BW2;
@@ -59,6 +50,8 @@ private:
     unsigned char port1;
     unsigned char port2 = 0;
 
+    unsigned int stateTimer; // in ms
+
 
 /*
     Automat handbetrieb;
@@ -68,6 +61,8 @@ private:
     std::list<Transition*>trlist_handbetrieb;
     std::list<Transition*>trlist_reperatur;
     std::list<Transition*>trlist_automatik;
+
+    //automatik guardfunction
 
 
 };

@@ -45,7 +45,7 @@ DoorControl::DoorControl() : door_if( true) ,
     //Temp ini später durch config handler
 
 
-
+    stateTimer = 0;
 
 
 
@@ -149,33 +149,74 @@ void DoorControl::updateHardwareElements(){
 
 }
 
-void DoorControl::turnOff(){
+//default Autommaten State-Function
+
+void DoorControl::defaultFunc(){}
+
+
+void DoorControl::MotorOf(){
+    //!Y1,!Y2
+}
+}
+
+void DoorControl::doorClose(){
+    //!Y1,Y2
+}
+
+void DoorControl::doorOpen(){
+    //Y1,!Y2
+}
+
+// Automatikbetrieb
+
+//1. Zustandsübergangsfunktionen (Betriebsart_startZustand_zielZustand())
+
+bool DoorControl::a_Init_Zu(){
+    return ;//ELG
+}
+
+bool DoorControl::a_Init_oeffnen(){
+    return ; //!ELO && !ELG
+}
+
+bool DoorControl::a_Init_Auf(){
+    return ; //ELO
+}
+
+bool DoorControl::a_Zu_oeffnen(){ // entspricht schließen-->öffnen, Auf-->Auf
+    return ; //NTA || LSA || LSV || BM
+}
+
+bool DoorControl::a_oeffnen_schliessen(){
+    return ; //NTZ
+}
+
+bool DoorControl::a_schliessen_oeffnen(){
+    return ; //ELG
+}
+
+bool DoorControl::a_Auf_schliessen(){
+    unsigned int delay = 3000;
+    if (stateTimer>=delay){
+        return true;
+    }
+
+    return ; //NTZ && (!NTA && !LSA && !LSV && !BM)
 
 }
 
-void DoorControl::iniHandbetrieb(){
+//2. State function
 
-}
-void DoorControl::iniReparatur(){
-
-}
-
-void DoorControl::iniAutomatik(){
-
+void DoorControl::a_enterInit(){
+    //!Y1,!Y2,Y3
+    unsigned int delay = 5000;
+    usleep(delay * 1000)
+    //!Y3
 }
 
-void DoorControl::switchStepAutomat(){
-
+void DoorControl::a_enterAuf(){
+    stateTimer = 0;
+    MotorOf();
 }
 
-void DoorControl::stepHandbetrieb(){
 
-}
-
-void DoorControl::stepReparatur(){
-
-}
-
-void DoorControl::stepAutomatik(){
-
-}
