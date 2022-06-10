@@ -149,6 +149,8 @@ void DoorControl::updateHardwareElements(){
 
 }
 
+
+
 //default Autommaten State-Function
 
 void DoorControl::defaultFunc(){}
@@ -166,6 +168,7 @@ void DoorControl::doorClose(){
 
 void DoorControl::doorOpen(){
     //Y1,!Y2
+
 }
 
 void DoorControl::d_AktorenOf(){
@@ -196,7 +199,7 @@ bool DoorControl::d_notNtaNtz(){
 
 //1. Zustandsübergangsfunktionen (Betriebsart_startZustand_zielZustand())
 
-bool DoorControl::a_Zu_oeffnen(){ // entspricht schließen-->öffnen, Auf-->Auf
+bool DoorControl::a_NtaLasLsvBm(){ // entspricht schließen-->öffnen, Auf-->Auf
     return ; //NTA || LSA || LSV || BM
 }
 
@@ -222,6 +225,7 @@ void DoorControl::a_enterInit(){
 void DoorControl::a_enterAuf(){
     stateTimer = 0;
     MotorOf();
+
 }
 
 //Handbetrieb
@@ -267,3 +271,41 @@ void DoorControl::r_oeffnen(){
     doorOpen();
     //Y3
 }
+
+void DoorControl::iniHandbetrieb() {
+    State Init(&a_enterInit,&MotorOf,&defaultFunc);
+    State Zu(&MotorOf,&MotorOf,&defaultFunc);
+    State Auf(&MotorOf,&MotorOf,&defaultFunc);
+    State Oeffnen(&doorOpen,&doorOpen,&defaultFunc);
+    State Schliessen(&doorClose,&doorClose,&defaultFunc);
+
+    Transition tr0(&Init,&Zu,&d_ELG);
+    Transition tr1(&Init,&Oeffnen,&d_notEloElg);
+    Transition tr2(&Init,&Auf,&d_ELO);
+    Transition tr3(&Auf,&Auf,&a_NtaLasLsvBm);
+    Transition tr4(&Auf,&Schliessen,&a_Auf_schliessen);
+    Transition tr5(&Oeffnen,&Auf,&d_ELO);
+    Transition tr6(&Oeffnen,&Schliessen,&d_NTZ);
+    Transition tr7(&Schliessen,&Zu,&d_ELG);
+    Transition tr8(&Schliessen,&Oeffnen,&a_NtaLasLsvBm);
+    Transition tr9(&Zu,&Oeffnen,&a_NtaLasLsvBm);
+
+    trlist_automatik.push_back(tr0);
+    trlist_automatik.push_back(tr1);
+    trlist_automatik.push_back(tr2);
+    trlist_automatik.push_back(tr3);
+    trlist_automatik.push_back(tr4);
+    trlist_automatik.push_back(tr5);
+    trlist_automatik.push_back(tr6);
+    trlist_automatik.push_back(tr7);
+    trlist_automatik.push_back(tr8);
+    trlist_automatik.push_back(tr9);
+
+    Automat auto_Automatik(trlist_automatik,&Init)
+
+}
+void DoorControl::iniReparaturmodus() {
+}
+void DoorControl::iniAutomatik() {
+}
+S

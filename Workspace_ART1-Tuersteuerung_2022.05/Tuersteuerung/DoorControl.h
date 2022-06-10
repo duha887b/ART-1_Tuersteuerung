@@ -58,6 +58,10 @@ private:
     Automat reparatur;
     Automat automatik;
 */
+    void iniHandbetrieb();
+    void iniReparaturmodus();
+    void iniAutomatik();
+
     std::list<Transition*>trlist_handbetrieb;
     std::list<Transition*>trlist_reperatur;
     std::list<Transition*>trlist_automatik;
