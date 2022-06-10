@@ -15,7 +15,9 @@ Automat::Automat(std::list<Transition*> tr, State *fs):tr(tr){
 }
 
 
-
+void Automat::restartAutomat() {
+    first = true;
+}
 
 
 void Automat::step(){

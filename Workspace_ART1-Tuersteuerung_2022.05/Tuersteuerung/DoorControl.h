@@ -11,7 +11,12 @@
 #define DOORCONTROL_HH
 
 #include "ncurses.h"
-#include "DoorInterface.h"
+#include "Simulator.h"
+#include "Sensor.h"
+#include "Aktor.h"
+#include "Automat.h"
+#include "State.h"
+#include "Transition.h"
 
 
 class DoorControl {
@@ -20,7 +25,39 @@ public:
 	~DoorControl();
 	void run();
 private:
-	DoorInterface door_if;
+
+    void updateHardwareElements();
+    void iniHandbetrieb();
+    void iniReperatur();
+    void iniAutomatik();
+    void switchStepAutomat();
+    void stepHandbetrieb();
+    void stepReperatur();
+    void stepAutomatik();
+    void turnOff();
+
+	Simulator door_if;
+    Sensor BW1;
+    Sensor BW2;
+    Sensor NTA;
+    Sensor NTZ;
+    Sensor ELO;
+    Sensor res;
+    Sensor ELG;
+    Sensor LSH;
+
+    Sensor LSV;
+    Sensor BM;
+
+    Aktor Y1;
+    Aktor Y2;
+    Aktor Y3;
+
+    unsigned char opMode;
+    unsigned char port0;
+    unsigned char port1;
+    unsigned char port2 = 0;
+
 };
 
 

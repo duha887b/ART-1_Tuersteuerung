@@ -23,6 +23,7 @@ public:
 
 	Automat(std::list<Transition*> tr, State* fs);
 	void step();
+    void restartAutomat();
 
 
 };
