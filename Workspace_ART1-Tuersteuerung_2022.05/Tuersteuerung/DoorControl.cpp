@@ -257,3 +257,13 @@ bool DoorControl::r_NTZ_notAll(){
 }
 
 //2. State function
+
+void DoorControl::r_schliessen(){
+    doorClose();
+    //Y3
+}
+
+void DoorControl::r_oeffnen(){
+    doorOpen();
+    //Y3
+}
