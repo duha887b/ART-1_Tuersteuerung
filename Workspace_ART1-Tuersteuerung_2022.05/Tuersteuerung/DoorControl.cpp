@@ -153,6 +153,7 @@ void DoorControl::updateHardwareElements(){
 
 void DoorControl::defaultFunc(){}
 
+// mehrfach verwendete State Functions
 
 void DoorControl::MotorOf(){
     //!Y1,!Y2
@@ -167,32 +168,36 @@ void DoorControl::doorOpen(){
     //Y1,!Y2
 }
 
+void DoorControl::d_AktorenOf(){
+    //!Y3
+    MotorOf();
+}
+
+//mehrfach verwendete Übergangsbedingungen
+bool DoorControl::d_ELO(){ // a_Init_Auf,h_Init_Auf
+    return ; //ELO
+}
+bool DoorControl::d_notEloElg(){ //a_Init_öffnen,h_Init_Stop
+    return ; //!ELO && !ELG
+}
+bool DoorControl::d_ELG(){ //a_Init_Zu,h_Init_Zu,a_schliessen_oeffnen
+    return ;//ELG
+}
+bool DoorControl::d_NTZ(){
+    return ; //NTZ
+}
+bool DoorControl::d_NTA(){
+    return ;//NTA
+}
+bool DoorControl::d_notNtaNtz(){
+    return; //!NTA&&!NTZ
+}
 // Automatikbetrieb
 
 //1. Zustandsübergangsfunktionen (Betriebsart_startZustand_zielZustand())
 
-bool DoorControl::a_Init_Zu(){
-    return ;//ELG
-}
-
-bool DoorControl::a_Init_oeffnen(){
-    return ; //!ELO && !ELG
-}
-
-bool DoorControl::a_Init_Auf(){
-    return ; //ELO
-}
-
 bool DoorControl::a_Zu_oeffnen(){ // entspricht schließen-->öffnen, Auf-->Auf
     return ; //NTA || LSA || LSV || BM
-}
-
-bool DoorControl::a_oeffnen_schliessen(){
-    return ; //NTZ
-}
-
-bool DoorControl::a_schliessen_oeffnen(){
-    return ; //ELG
 }
 
 bool DoorControl::a_Auf_schliessen(){
@@ -219,4 +224,36 @@ void DoorControl::a_enterAuf(){
     MotorOf();
 }
 
+//Handbetrieb
 
+//1. Zustandsübergangsfunktionen (Betriebsart_startZustand_zielZustand())
+
+bool DoorControl::h_Stop_Stop(){
+    return ;//(!NTA&&!NTZ)||(NTZ&&NTA)
+}
+
+//Reparaturbetrieb
+
+//1. Zustandsübergangsfunktionen (Betriebsart_startZustand_zielZustand())
+
+bool DoorControl::r_notNTZ(){
+    return ;//!NTZ
+}
+
+bool DoorControl::r_Stop_Stop(){
+    return ;//NTZ && (NTA || LSH || LSV || BW)
+}
+
+bool DoorControl::r_oeffnen_Stop(){
+    return ;//!NTZ && !NTA && !LSH && !LSV && !BW
+}
+
+bool DoorControl::r_allNotNTZ(){
+    return ;//!NTZ && (NTA || LSH || LSV || BW)
+}
+
+bool DoorControl::r_NTZ_notAll(){
+    return ;//NTZ && !NTA && !LSH &&\n !LSV && !BW
+}
+
+//2. State function
