@@ -11,10 +11,9 @@ int main (int argc, char *argv[])
     // ... maybe insert your class initialization here?
     // example:
 
-    //DoorControl control;
-    //control.run();
-    config_handler cfg_handler();
-    cfg_handler.run();
+    DoorControl control;
+    control.run();
+
 
     return 0;
 }
