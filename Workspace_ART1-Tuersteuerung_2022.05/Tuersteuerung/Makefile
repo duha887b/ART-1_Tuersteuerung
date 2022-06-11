@@ -36,6 +36,7 @@ CC_FILES = \
 	Sensor.cpp \
 	HardwareElement.cpp \
 	Aktor.cpp \
+	config_handler.cpp \
 	main.cpp
 
 # in diese Variable gehören alle zu kompilierenden C++-Header-Dateien
@@ -51,7 +52,8 @@ HH_FILES = \
 	Transition.h \
 	Sensor.h \
 	aktor.h \
-	HardwareElement.h
+	HardwareElement.h \
+	config_handler.h
 
 
 # in diese Variable gehören alle zu kompilierenden C-Quellcode-Dateien
