@@ -13,7 +13,7 @@
 //config_handler(const config_handler&) = delete;				//nur Referenzierung, keine Kopie möglich
 //static config_handler* _instance;
 
-std::vector<HardwareElement> aktoren_sensoren_ini;
+std::vector<HardwareElement*> aktoren_sensoren_ini;
 
 config_handler::config_handler() {
 
@@ -33,35 +33,45 @@ std::vector<HardwareElement> config_handler::run() {
 
     std::ifstream input(filename);
 
-    if (!input) {
-        std::cerr << "Keine config Datei gefunden";
-        return;
-    }
+   // if (!input) {
+   //     std::cerr << "Keine config Datei gefunden";    Fehler für logfile!!!
+   //     return NULL;
+   // }
 
     std::string line;
-    std::vector<std::string> vector_tmp;
-    std::vector<std::vector> aktoren_sensoren_read;
+    std::string delimiter = ",";
+    std::string token;
+    size_t pos = 0;
+    //std::vector<std::string> vector_tmp;
+    std::vector<std::vector<std::string>> aktoren_sensoren_read;
 
-    i=0;
+    int i=0;
+    int m=0;
+
 
     while (std::getline(input, line)) {
         //std::cout << line << "/n";
        // if ((line!="")&&i>23)             Fehler für logfile
 
-        vector_tmp=split(line);
-        aktoren_sensoren_read.at(i)=vector_tmp;
+        while((pos = line.find(delimiter)) != std::string::npos) {
+            token = line.substr(0,pos);
+            aktoren_sensoren_read.at(i).at(m);
+            line.erase(0,pos+delimiter.length());
+            m++;
+        }
+
         i++;
     }
 
-    int port=0;
+    //int port=0;
 
-    for (j=0;j<24;j++) {              //24 -> 3 Ports mit je 8 pins
+    for (int j=0;j<24;j++) {              //24 -> 3 Ports mit je 8 pins
 
         //if (((j+1)%8)==0)  port++;         //für die richtige Portzuweisung
 
         //sensor aktor initialisierung
         if (aktoren_sensoren_read.at(j).at(0)=="reserviert"){
-            aktoren_sensoren_ini.at(j) = new HardwareElement(-1,-1,0);
+            aktoren_sensoren_ini.at(j) = new HardwareElement(-1,-1,false)*;
 
             continue;
         }
@@ -76,7 +86,7 @@ std::vector<HardwareElement> config_handler::run() {
 
         //if (i_port_tmp>2 || i_port_tmp<0) ; //Fehler für logfile
 
-        if (aktoren_sensoren_read_sensoren_read.at(j).at(0)=="sensor") {
+        if (aktoren_sensoren_read.at(j).at(0)=="sensor") {
             //neuen sensor definieren
 
             aktoren_sensoren_ini.at(j) = new Sensor(i_port_tmp,i_pin_tmp,0,i_opMode_tmp);

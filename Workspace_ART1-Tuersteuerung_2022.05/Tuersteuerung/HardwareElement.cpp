@@ -3,6 +3,7 @@
 //
 
 #include "HardwareElement.h"
+
 #include <iostream>
 
 HardwareElement::HardwareElement(unsigned int port, unsigned int pin, bool state) : port(port),

@@ -8,6 +8,7 @@
 #include "Aktor.h"
 #include "Sensor.h"
 #include "HardwareElement.h"
+#include <vector>
 
 class config_handler {
 
