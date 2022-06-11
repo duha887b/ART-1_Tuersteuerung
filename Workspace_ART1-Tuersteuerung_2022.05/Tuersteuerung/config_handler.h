@@ -13,6 +13,8 @@
 class config_handler {
 
 public:
+    Sensor sensoren_get();
+    Aktor aktoren_get();
     HardwareElement* run();
     static config_handler& get_instance();
     config_handler();

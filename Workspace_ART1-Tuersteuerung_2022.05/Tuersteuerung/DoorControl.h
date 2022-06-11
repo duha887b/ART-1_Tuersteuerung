@@ -1,6 +1,5 @@
 /*  -*- mode: c++; -*-
-
- * Praktikum MRT2 
+ * Praktikum MRT2
  * ART1 Türsteuerung
  * Institut für Automatisierungstechnik
  * letztes Update Mai 2018
@@ -22,13 +21,13 @@
 
 class DoorControl {
 public:
-	DoorControl();
-	~DoorControl();
-	void run();
+    DoorControl();
+    ~DoorControl();
+    void run();
 private:
 
     void updateHardwareElements();
-	Simulator door_if;
+    Simulator door_if;
     Sensor BW1;
     Sensor BW2;
     Sensor NTA;

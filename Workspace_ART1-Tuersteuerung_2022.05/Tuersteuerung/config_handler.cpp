@@ -29,6 +29,27 @@ static config_handler& get_instance() {
 }
 
 //std::vector<HardwareElement*> config_handler::run() {
+Sensor config_handler::sensoren_get(HardwareElement* list[24]) {
+    Sensor sens[16];
+
+    for (int i=0;i<16;i++){
+        sens[i] = list [i];
+    }
+
+    return sens;
+}
+
+Aktor config_handler::aktoren_get(HardwareElement* list[24]) {
+    Aktor akt[8];
+
+    for(int i=0;i<8;i++) {
+        akt[i] = list[16+i];
+    }
+
+    return akt;
+
+}
+
 HardwareElement* config_handler::run() {
     std::string filename = "config.txt";
 
@@ -43,8 +64,6 @@ HardwareElement* config_handler::run() {
     std::string delimiter = ",";
     std::string token;
     size_t pos = 0;
-    //std::vector<std::string> vector_tmp;
-    //std::vector<std::vector<std::string>> aktoren_sensoren_read(24);
     std::string aktoren_sensoren_read[24][5];
 
     int i=0;
