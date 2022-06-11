@@ -1,4 +1,3 @@
-typ,name,high/low active,port pin
 sensor,BW1,1,0,0
 sensor,BW2,1,0,1
 sensor,NTA,1,0,2
