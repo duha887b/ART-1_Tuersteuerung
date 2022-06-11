@@ -13,7 +13,7 @@
 class config_handler {
 
 public:
-    std::vector<HardwareElement*> run();
+    HardwareElement* run();
     static config_handler& get_instance();
     config_handler();
 
