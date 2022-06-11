@@ -27,7 +27,7 @@ static config_handler& get_instance() {
     return _instance;
 }
 
-std::vector<HardwareElement> config_handler::run() {
+std::vector<HardwareElement*> config_handler::run() {
 
     std::string filename = "config.txt";
 
@@ -71,7 +71,7 @@ std::vector<HardwareElement> config_handler::run() {
 
         //sensor aktor initialisierung
         if (aktoren_sensoren_read.at(j).at(0)=="reserviert"){
-            aktoren_sensoren_ini.at(j) = new HardwareElement(-1,-1,false)*;
+            aktoren_sensoren_ini.at(j) = new HardwareElement(-1,-1,false);
 
             continue;
         }
