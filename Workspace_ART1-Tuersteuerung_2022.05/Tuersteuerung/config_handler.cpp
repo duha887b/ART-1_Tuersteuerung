@@ -39,7 +39,7 @@ std::vector<HardwareElement> config_handler::run() {
     }
 
     std::string line;
-    std::vector_tmp<std::string>;
+    std::vector<std::string> vector_tmp;
     std::vector<std::vector> aktoren_sensoren_read;
 
     i=0;
