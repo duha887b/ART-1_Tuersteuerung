@@ -161,7 +161,7 @@ void DoorControl::updateHardwareElements(){
 
 }
 
-
+/*
 
 //default Autommaten State-Function
 //TODO pseudocode übersetzen tobi fehtl
@@ -406,3 +406,4 @@ Automat* DoorControl::iniReparaturmodus() {
 
     Automat auto_Reperaturmodus(trlist_reperatur,&Init);
 }
+*/
