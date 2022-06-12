@@ -18,10 +18,10 @@ public:
     void run();
     static config_handler& get_instance();
     config_handler();
-    Aktor* get_akt_list();
-    Sensor* get_sens_list();
-    Aktor* akt_list[8];
-    Sensor* sens_list[24];
+    std::vector<Aktor*> get_akt_list();
+    std::vector<Sensor*> get_sens_list();
+    std::vector<Aktor*> akt_list;
+    std::vector<Sensor*> sens_list;
 
 private:
 

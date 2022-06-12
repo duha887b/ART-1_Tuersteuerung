@@ -16,6 +16,7 @@
 #include "Automat.h"
 #include "State.h"
 #include "Transition.h"
+#include <vector>
 
 
 
@@ -100,7 +101,6 @@ void DoorControl::run()
 void DoorControl::updateHardwareElements(){
 
 
-//TODO Tobi anpassen der instanzen Harware Element
 //TODO if clause HardwareInterface oder Simulatior --> door_if
 
 

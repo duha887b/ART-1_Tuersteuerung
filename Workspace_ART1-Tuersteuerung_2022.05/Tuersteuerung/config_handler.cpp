@@ -26,7 +26,6 @@ static config_handler& get_instance() {
     return _instance;
 }
 
-//std::vector<HardwareElement*> config_handler::run() {
 
 void config_handler::run() {
     std::string filename = "config.txt";
@@ -44,44 +43,35 @@ void config_handler::run() {
     size_t pos = 0;
     std::string aktoren_sensoren_read[24][5];
 
+
     int i=0;
 
 
     while (std::getline(input, line)) {
-        //std::cout << line << "/n";
+
         //if ((line!="")&&i>23)             Fehler für logfile
-        //std::cout << "while(getline)" << std::endl;
+
         int m=0;
 
         while((pos = line.find(delimiter)) != std::string::npos) {
             token = line.substr(0,pos);
-            //std::cout << "Zeile: " << line << std::endl;
-            //std::cout << token << std::endl;
             //aktoren_sensoren_read.at(i).at(m) = token;
             aktoren_sensoren_read[i][m] = token;
             line.erase(0,pos+delimiter.length());
             m++;
             if (m==4) aktoren_sensoren_read[i][m] = line;
-            //std::cout << "m: " << m << std::endl;
         }
 
         i++;
-        //std::cout << "i: " << i << std::endl;
 
 
     }
-    //std::cout << "while(getline) fertig" << std::endl;
-    //int port=0;
 
     for (int j=0;j<24;j++) {              //24 -> 3 Ports mit je 8 pins
 
-        //if (((j+1)%8)==0)  port++;         //für die richtige Portzuweisung
-
         //sensor aktor initialisierung
 
-        //std::cout << "for Anfang" << std::endl;
-
-/*        if (aktoren_sensoren_read[j][1]=="reserviert"){
+        /*        if (aktoren_sensoren_read[j][1]=="reserviert"){
             aktoren_sensoren_ini[j] = new HardwareElement(-1,-1,false);
 
             continue;
@@ -122,21 +112,6 @@ void config_handler::run() {
     //std::cout << "cfg wurde eingelesen" << std::endl;             evtl logfile
 
 }
-
-/*Sensor* config_handler::sensoren_get() {
-    //Sensor sens(1,1, true, true) ;//= new Sensor[16];
-    Sensor* sens[16];
-
-    for (int i = 0; i < 16; i++) {
-         sens[i] = aktoren_sensoren_ini[i];
-        //aktoren_sensoren_ini[i]->getPin();
-        //std::cout << std::to_string((aktoren_sensoren_ini[i]->getPin()))<<std::endl;
-    }
-    std::cout << sens[0]->getPin() << " / " << sens[0]->getPort() << std::endl;
-
-
-    return sens[16];
-}*/
 
 std::vector<Aktor*> config_handler::get_akt_list() {
     return akt_list;

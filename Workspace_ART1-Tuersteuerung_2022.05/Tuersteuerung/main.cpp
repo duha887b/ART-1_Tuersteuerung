@@ -1,9 +1,9 @@
 #include "DoorControl.h"
 #include "config_handler.h"
-#include "config_handler.h"
 #include <fstream>
 #include "iostream"
-
+#include <vector>
+#include <usb.h>
 using namespace std;
 
 /* Das Programm in Eclipse mittels des Menüeintrags:
