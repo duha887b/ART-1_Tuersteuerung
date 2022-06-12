@@ -126,16 +126,17 @@ void config_handler::run() {
 }
 
 Sensor* config_handler::sensoren_get() {
-   Sensor sens(1,1, true, true) ;//= new Sensor[16];
+    //Sensor sens(1,1, true, true) ;//= new Sensor[16];
+    Sensor* sens[16];
 
     for (int i = 0; i < 16; i++) {
-        aktoren_sensoren_ini[i];
-        aktoren_sensoren_ini[i]->getPin();
+        aktoren_sensoren_ini[i] = sens[i];
+        //aktoren_sensoren_ini[i]->getPin();
         //std::cout << std::to_string((aktoren_sensoren_ini[i]->getPin()))<<std::endl;
     }
 
 
-    return &sens;
+    return sens[16];
 }
 /*
 Aktor config_handler::aktoren_get() {
