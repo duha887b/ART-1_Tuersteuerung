@@ -17,6 +17,9 @@
 #include "State.h"
 #include "Transition.h"
 #include <iostream>
+#include "config_handler.h"
+#include <vector>
+
 
 
 class DoorControl {
@@ -28,21 +31,8 @@ private:
 
     void updateHardwareElements();
     Simulator door_if;
-    Sensor BW1;
-    Sensor BW2;
-    Sensor NTA;
-    Sensor NTZ;
-    Sensor ELO;
-    Sensor res;
-    Sensor ELG;
-    Sensor LSH;
+    config_handler handler;
 
-    Sensor LSV;
-    Sensor BM;
-
-    Aktor Y1;
-    Aktor Y2;
-    Aktor Y3;
 
     unsigned char opMode;
     unsigned char port0;

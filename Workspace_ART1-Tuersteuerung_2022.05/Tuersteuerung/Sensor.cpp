@@ -23,8 +23,8 @@ void Sensor::setOpMode(bool Mode) {
 }
 
 bool Sensor::getState() {
-    if (!getOpMode()){
-        state = !state;
+    if (!opMode){
+       return !state;
     }
     return state;
 }
