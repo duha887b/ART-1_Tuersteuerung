@@ -19,6 +19,7 @@
 #include <iostream>
 #include "config_handler.h"
 #include <vector>
+#include "AutomatFunction.h"
 
 
 
@@ -45,11 +46,13 @@ private:
 
     Automat* iniHandbetrieb();
     Automat* iniReparaturmodus();
-    Automat* iniAutomatik();
+    void iniAutomatik();
 
     std::list<Transition*>trlist_handbetrieb;
     std::list<Transition*>trlist_reperatur;
     std::list<Transition*>trlist_automatik;
+
+   // AutomatFunction AutoFunction;
 
     //automatik guardfunction
 };

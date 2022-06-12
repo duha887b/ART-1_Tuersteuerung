@@ -8,6 +8,8 @@
 /*
 AutomatFunction::AutomatFunction(config_handler handler) : handler(handler){
 
+    stateTimer = 0;
+
 }
 */
 //default Autommaten State-Function

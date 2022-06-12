@@ -6,6 +6,7 @@
 #define ART_1_TUERSTEUERUNG_AUTOMATFUNCTION_H
 
 #include "config_handler.h"
+#include "Behaviour.h"
 
 //class AutomatFunction {
 
@@ -51,6 +52,8 @@
 
     void r_schliessen();
     void r_oeffnen();
+
+
 
 //};
 

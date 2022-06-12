@@ -17,21 +17,24 @@
 #include "State.h"
 #include "Transition.h"
 #include <vector>
-
+#include "AutomatFunction.h"
 
 
 
 DoorControl::DoorControl() : door_if( true) ,
                              opMode(0),
-                             handler()
+                             handler(),
+                             automatik()
+
+
+                             //AutoFunction(handler)
 
 
 {
     // constructor
     // ... maybe, insert your sensor and actor initialization here?
 
-    //Temp ini später durch config handler
-
+    //Temp ini später durch config handle
     handler.run();
     getHandler(handler);
 
