@@ -4,17 +4,16 @@
 
 #include "config_handler.h"
 #include "HardwareElement.h"
-#include "Sensor.h"
-#include "Aktor.h"
 #include <fstream>
 #include <iostream>
 #include <string>
+
 
 //config_handler(const config_handler&) = delete;				//nur Referenzierung, keine Kopie möglich
 //static config_handler* _instance;
 
 //std::vector<HardwareElement*> aktoren_sensoren_ini;
-HardwareElement* aktoren_sensoren_ini[24];
+
 
 config_handler::config_handler() {
 
@@ -29,28 +28,8 @@ static config_handler& get_instance() {
 }
 
 //std::vector<HardwareElement*> config_handler::run() {
-Sensor config_handler::sensoren_get(HardwareElement* list[24]) {
-    Sensor sens[16];
 
-    for (int i=0;i<16;i++){
-        sens[i] = list [i];
-    }
-
-    return sens;
-}
-
-Aktor config_handler::aktoren_get(HardwareElement* list[24]) {
-    Aktor akt[8];
-
-    for(int i=0;i<8;i++) {
-        akt[i] = list[16+i];
-    }
-
-    return akt;
-
-}
-
-HardwareElement* config_handler::run() {
+void config_handler::run() {
     std::string filename = "config.txt";
 
     std::ifstream input(filename);
@@ -136,11 +115,37 @@ HardwareElement* config_handler::run() {
         }
 
         else {       //logfile für Fehler
+
     }
 
     }
 
     std::cout << "cfg wurde eingelesen" << std::endl;
-    return *aktoren_sensoren_ini;
+
 
 }
+
+Sensor* config_handler::sensoren_get() {
+   Sensor sens(1,1, true, true) ;//= new Sensor[16];
+
+    for (int i = 0; i < 16; i++) {
+        aktoren_sensoren_ini[i];
+        aktoren_sensoren_ini[i]->getPin();
+        //std::cout << std::to_string((aktoren_sensoren_ini[i]->getPin()))<<std::endl;
+    }
+
+
+    return &sens;
+}
+/*
+Aktor config_handler::aktoren_get() {
+    Aktor *akt[8];
+
+    for(int i=0;i<8;i++) {
+        *akt[i] = *aktoren_sensoren_ini[16+i];
+    }
+
+    return *akt;
+
+}
+*/
