@@ -21,7 +21,8 @@ private:
 
 public:
 
-	Automat(std::list<Transition*> tr, State* fs);
+    Automat(std::list<Transition*> tr, State* fs);
+    Automat();
 	void step();
     void restartAutomat();
 

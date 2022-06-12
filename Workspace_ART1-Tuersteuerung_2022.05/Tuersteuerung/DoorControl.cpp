@@ -33,7 +33,7 @@ DoorControl::DoorControl() : door_if( true) ,
     //Temp ini später durch config handler
 
     handler.run();
-    stateTimer = 0;
+    getHandler(handler);
 
 
 
@@ -52,14 +52,52 @@ void DoorControl::run()
     // example:
 
 
+    //Automat testautomat = iniAutomatik();
+
+
+
+
+    State Init(&a_enterInit,&MotorOf,&defaultFunc);
+    State Zu(&MotorOf,&MotorOf,&defaultFunc);
+    State Auf(&MotorOf,&MotorOf,&defaultFunc);
+    State Oeffnen(&doorOpen,&doorOpen,&defaultFunc);
+    State Schliessen(&doorClose,&doorClose,&defaultFunc);
+
+    Transition tr0(&Init,&Zu,&d_ELG);
+    Transition tr1(&Init,&Oeffnen,&d_notEloElg);
+    Transition tr2(&Init,&Auf,&d_ELO);
+    Transition tr3(&Auf,&Auf,&a_NtaLasLsvBm);
+    Transition tr4(&Auf,&Schliessen,&a_Auf_schliessen);
+    Transition tr5(&Oeffnen,&Auf,&d_ELO);
+    Transition tr6(&Oeffnen,&Schliessen,&d_NTZ);
+    Transition tr7(&Schliessen,&Zu,&d_ELG);
+    Transition tr8(&Schliessen,&Oeffnen,&a_NtaLasLsvBm);
+    Transition tr9(&Zu,&Oeffnen,&a_NtaLasLsvBm);
+
+    trlist_automatik.push_back(&tr0);
+    trlist_automatik.push_back(&tr1);
+    trlist_automatik.push_back(&tr2);
+    trlist_automatik.push_back(&tr3);
+    trlist_automatik.push_back(&tr4);
+    trlist_automatik.push_back(&tr5);
+    trlist_automatik.push_back(&tr6);
+    trlist_automatik.push_back(&tr7);
+    trlist_automatik.push_back(&tr8);
+    trlist_automatik.push_back(&tr9);
+
+
+    Automat auto_Automatik(trlist_automatik,&Init);
+
 
     std::string msg;		// temporary variable to construct message
     unsigned max_count = 20000;	// loop this often
     unsigned delay_ms = 20;		// Milliseconds to wait on one loop
     unsigned int tm = 0;
-
+    //automatik.step();
     while (!door_if.quit_simulator_flag){
 
+        //automatik->step();
+        auto_Automatik.step();
 
         updateHardwareElements();
 
@@ -73,11 +111,11 @@ void DoorControl::run()
 
 
         //construct counter message
-        msg = "press 'q' to quit ";
+        msg = std::to_string(!(handler.sens_list.at(4)->getState()) && !(handler.sens_list.at(6)->getState()));
+        msg += "press 'q' to quit ";
         msg += std::to_string((int)((delay_ms*tm)/1000));
         msg += " s, timer: ";
-        msg += std::to_string((int )(stateTimer/1000));
-        msg += "  ";
+
 
         for (int i = 0; i < 15; i++) { //reference für debug string
             msg+= std::to_string(handler.sens_list.at(i)->getState());
@@ -93,7 +131,9 @@ void DoorControl::run()
 
         // wait some time
         usleep(delay_ms * 1000);
-        stateTimer += delay_ms;
+
+        stepTimer(delay_ms);
+
         tm++;
     }
 }
@@ -178,9 +218,10 @@ void DoorControl::updateHardwareElements(){
 }
 
 
+/*
 
+void DoorControl::iniAutomatik() {
 
-Automat* DoorControl::iniAutomatik() {
 
 
 
@@ -210,10 +251,12 @@ Automat* DoorControl::iniAutomatik() {
     trlist_automatik.push_back(&tr6);
     trlist_automatik.push_back(&tr7);
     trlist_automatik.push_back(&tr8);
-    trlist_automatik.push_back(tr9);
+    trlist_automatik.push_back(&tr9);
+
 
     Automat auto_Automatik(trlist_automatik,&Init);
-    return &auto_Automatik;
+    automatik = auto_Automatik;
+
 }
  /*
 Automat* DoorControl::iniHandbetrieb() {

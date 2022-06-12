@@ -7,14 +7,20 @@
 
 #include "config_handler.h"
 
-class AutomatFunction {
+//class AutomatFunction {
 
-public:
+//public:
 
-    AutomatFunction(config_handler handler);
-    ~AutomatFunction();
+    //AutomatFunction(config_handler handler);
+    //~AutomatFunction();
 
-    config_handler handler;
+
+
+
+    void stepTimer(unsigned int delay_ms);
+
+    void getHandler(config_handler hl);
+
 
     void defaultFunc();
     void MotorOf();
@@ -46,7 +52,7 @@ public:
     void r_schliessen();
     void r_oeffnen();
 
-};
+//};
 
 
 #endif //ART_1_TUERSTEUERUNG_AUTOMATFUNCTION_H

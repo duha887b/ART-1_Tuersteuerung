@@ -9,6 +9,10 @@
 using namespace std;
 #include "Automat.h"
 
+Automat::Automat() {
+
+}
+
 Automat::Automat(std::list<Transition*> tr, State *fs):tr(tr){
 	firstState=fs;
 	first=true;

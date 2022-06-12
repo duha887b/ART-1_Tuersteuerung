@@ -39,14 +39,10 @@ private:
     unsigned char port1;
     unsigned char port2 = 0;
 
-    unsigned int stateTimer; // in ms
+    //Automat ptr_handbetrieb;
+    Automat ptr_reparatur;
+    Automat automatik ;
 
-
-/*
-    Automat handbetrieb;
-    Automat reparatur;
-    Automat automatik;
-*/
     Automat* iniHandbetrieb();
     Automat* iniReparaturmodus();
     Automat* iniAutomatik();
