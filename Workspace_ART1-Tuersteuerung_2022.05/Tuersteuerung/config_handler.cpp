@@ -13,6 +13,8 @@
 //static config_handler* _instance;
 
 //std::vector<HardwareElement*> aktoren_sensoren_ini;
+Aktor* akt_list[8];
+Sensor* sens_list[24];
 
 
 config_handler::config_handler() {
@@ -82,11 +84,11 @@ void config_handler::run() {
 
         //std::cout << "for Anfang" << std::endl;
 
-        if (aktoren_sensoren_read[j][1]=="reserviert"){
+/*        if (aktoren_sensoren_read[j][1]=="reserviert"){
             aktoren_sensoren_ini[j] = new HardwareElement(-1,-1,false);
 
             continue;
-        }
+        }*/
 
         std::string port_tmp = aktoren_sensoren_read[j][3];
         std::string pin_tmp = aktoren_sensoren_read[j][4];
@@ -101,7 +103,8 @@ void config_handler::run() {
         if (aktoren_sensoren_read[j][0]=="sensor") {
             //neuen sensor definieren
 
-            aktoren_sensoren_ini[j] = new Sensor(i_port_tmp,i_pin_tmp,0,i_opMode_tmp);
+            sens_list[j] = new Sensor(i_port_tmp,i_pin_tmp,0,i_opMode_tmp);
+
 
             continue;
         }
@@ -109,7 +112,7 @@ void config_handler::run() {
         if (aktoren_sensoren_read[j][0]=="aktor") {
             //neuen aktor definieren
 
-            aktoren_sensoren_ini[j] = new Aktor(i_port_tmp,i_pin_tmp,0);
+            akt_list[j] = new Aktor(i_port_tmp,i_pin_tmp,0);
 
             continue;
         }
@@ -125,18 +128,33 @@ void config_handler::run() {
 
 }
 
-Sensor* config_handler::sensoren_get() {
+/*Sensor* config_handler::sensoren_get() {
     //Sensor sens(1,1, true, true) ;//= new Sensor[16];
     Sensor* sens[16];
 
     for (int i = 0; i < 16; i++) {
-        aktoren_sensoren_ini[i] = sens[i];
+         sens[i] = aktoren_sensoren_ini[i];
         //aktoren_sensoren_ini[i]->getPin();
         //std::cout << std::to_string((aktoren_sensoren_ini[i]->getPin()))<<std::endl;
     }
+    std::cout << sens[0]->getPin() << " / " << sens[0]->getPort() << std::endl;
 
 
     return sens[16];
+}*/
+
+Aktor* config_handler::get_akt_list() {
+    return *akt_list;
+}
+
+Sensor* config_handler::get_sens_list() {
+    for (int i=0; i<16;i++) {
+        Sensor sens = *sens_list[i];
+        std::cout << "Port (Sensor" << i << "): " << sens.getPort();
+        std::cout << "Pin (Sensor" << i << "): " << sens.getPin() << std::endl;
+    }
+    return *sens_list;
+
 }
 /*
 Aktor config_handler::aktoren_get() {

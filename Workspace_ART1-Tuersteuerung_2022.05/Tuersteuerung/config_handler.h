@@ -13,11 +13,13 @@
 class config_handler {
 
 public:
-    Sensor* sensoren_get();
-    Aktor aktoren_get();
+    //Sensor* sensoren_get();
+    //Aktor aktoren_get();
     void run();
     static config_handler& get_instance();
     config_handler();
+    Aktor* get_akt_list();
+    Sensor* get_sens_list();
 
 private:
 
