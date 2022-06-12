@@ -189,7 +189,7 @@ void DoorControl::MotorOf(){
     handler.akt_list.at(0)->setState(false);
     handler.akt_list.at(1)->setState(false);
 }
-}
+
 void DoorControl::doorClose(){
     //!Y1,Y2
     handler.akt_list.at(0)->setState(false);
@@ -252,7 +252,7 @@ void DoorControl::a_enterInit(){
     MotorOf();
     handler.akt_list.at(2)->setState(true);
     unsigned int delay = 5000;
-    usleep(delay * 1000)
+    usleep(delay * 1000);
     //!Y3
     handler.akt_list.at(2)->setState(true);
 }
@@ -274,7 +274,7 @@ bool DoorControl::r_notNTZ(){
 }
 bool DoorControl::r_Stop_Stop(){
     //NTZ && (NTA || LSH || LSV || BW)
-    return ((handler.sens_list.at(3)&&
+    return  (handler.sens_list.at(3))&&
             (handler.sens_list.at(2)||handler.sens_list.at(7)||handler.sens_list.at(8)||handler.sens_list.at(9));
 }
 bool DoorControl::r_oeffnen_Stop(){
@@ -285,7 +285,7 @@ bool DoorControl::r_oeffnen_Stop(){
 }
 bool DoorControl::r_allNotNTZ(){
     //!NTZ && (NTA || LSH || LSV || BW)
-    return (!(handler.sens_list.at(3)&&
+    return   !(handler.sens_list.at(3))&&
              (handler.sens_list.at(2)||handler.sens_list.at(7)||handler.sens_list.at(8)||handler.sens_list.at(9));
 
 }
@@ -306,13 +306,17 @@ void DoorControl::r_oeffnen(){
     //Y3
     handler.akt_list.at(2)->setState(true);
 }
-/*
+
 Automat* DoorControl::iniAutomatik() {
+
+
+
     State Init(&a_enterInit,&MotorOf,&defaultFunc);
     State Zu(&MotorOf,&MotorOf,&defaultFunc);
     State Auf(&MotorOf,&MotorOf,&defaultFunc);
     State Oeffnen(&doorOpen,&doorOpen,&defaultFunc);
     State Schliessen(&doorClose,&doorClose,&defaultFunc);
+
     Transition tr0(&Init,&Zu,&d_ELG);
     Transition tr1(&Init,&Oeffnen,&d_notEloElg);
     Transition tr2(&Init,&Auf,&d_ELO);
@@ -323,19 +327,22 @@ Automat* DoorControl::iniAutomatik() {
     Transition tr7(&Schliessen,&Zu,&d_ELG);
     Transition tr8(&Schliessen,&Oeffnen,&a_NtaLasLsvBm);
     Transition tr9(&Zu,&Oeffnen,&a_NtaLasLsvBm);
-    trlist_automatik.push_back(tr0);
-    trlist_automatik.push_back(tr1);
-    trlist_automatik.push_back(tr2);
-    trlist_automatik.push_back(tr3);
-    trlist_automatik.push_back(tr4);
-    trlist_automatik.push_back(tr5);
-    trlist_automatik.push_back(tr6);
-    trlist_automatik.push_back(tr7);
-    trlist_automatik.push_back(tr8);
+
+    trlist_automatik.push_back(&tr0);
+    trlist_automatik.push_back(&tr1);
+    trlist_automatik.push_back(&tr2);
+    trlist_automatik.push_back(&tr3);
+    trlist_automatik.push_back(&tr4);
+    trlist_automatik.push_back(&tr5);
+    trlist_automatik.push_back(&tr6);
+    trlist_automatik.push_back(&tr7);
+    trlist_automatik.push_back(&tr8);
     trlist_automatik.push_back(tr9);
+
     Automat auto_Automatik(trlist_automatik,&Init);
     return &auto_Automatik;
 }
+ /*
 Automat* DoorControl::iniHandbetrieb() {
     State Init(&d_AktorenOf,&d_AktorenOf,&defaultFunc);
     State Zu(&MotorOf,&MotorOf,&defaultFunc);
