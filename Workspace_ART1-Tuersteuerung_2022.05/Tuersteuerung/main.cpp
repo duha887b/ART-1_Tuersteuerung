@@ -16,14 +16,14 @@ int main (int argc, char *argv[])
 
     config_handler handler;
     handler.run();
-    Sensor* sens = handler.get_sens_list();
-    Aktor* akt = handler.get_akt_list();
+    //Sensor sens = handler.sens_list;
+    //Aktor akt = handler.akt_list;
 
     for (int i=0;i<16;i++) {
-        cout << "Sensor" << i << ": " << sens[i].getPin() << " / " << sens[i].getPort() << endl;
+        cout << "Sensor" << i << ": " << handler.sens_list[i]->getPin() << " / " << handler.sens_list[i]->getPort() << endl;
     }
 
-    cout << "Aktor0: " << akt[0].getPin() << " / " << akt[0].getPort() << endl;
+    cout << "Aktor0: " << handler.akt_list[0]->getPin() << " / " << handler.akt_list[0]->getPort() << endl;
 
     /*
     DoorControl control;

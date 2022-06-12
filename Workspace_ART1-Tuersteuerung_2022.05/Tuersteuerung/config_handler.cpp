@@ -105,7 +105,6 @@ void config_handler::run() {
 
             sens_list[j] = new Sensor(i_port_tmp,i_pin_tmp,0,i_opMode_tmp);
 
-
             continue;
         }
 
@@ -150,6 +149,7 @@ Aktor* config_handler::get_akt_list() {
 Sensor* config_handler::get_sens_list() {
     for (int i=0; i<16;i++) {
         Sensor sens = *sens_list[i];
+        std::cout << "get_sens_list:" << std::endl;
         std::cout << "Port (Sensor" << i << "): " << sens.getPort();
         std::cout << "Pin (Sensor" << i << "): " << sens.getPin() << std::endl;
     }

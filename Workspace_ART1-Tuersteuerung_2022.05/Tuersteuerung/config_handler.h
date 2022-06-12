@@ -20,6 +20,8 @@ public:
     config_handler();
     Aktor* get_akt_list();
     Sensor* get_sens_list();
+    Aktor* akt_list[8];
+    Sensor* sens_list[24];
 
 private:
 
