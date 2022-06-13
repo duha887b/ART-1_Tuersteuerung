@@ -22,14 +22,13 @@
 
 
 
-DoorControl::DoorControl() : door_if( true) ,
+DoorControl::DoorControl() : door_if(true) ,
                              opMode(0),
                              handler(),
                              automatik()
 
 
                              //AutoFunction(handler)
-
 
 {
     // constructor
@@ -55,76 +54,21 @@ void DoorControl::run()
     // ... insert your main loop here ...
     // example:
 
-
-    //Automat testautomat = iniAutomatik();
-
-
-
-
-/*    State Init(&a_enterInit,&MotorOf,&defaultFunc);
-    State Zu(&MotorOf,&MotorOf,&defaultFunc);
-    State Auf(&MotorOf,&MotorOf,&defaultFunc);
-    State Oeffnen(&doorOpen,&doorOpen,&defaultFunc);
-    State Schliessen(&doorClose,&doorClose,&defaultFunc);*/
-
-    std::map<std::string, State*> states;
-
-    states["Init"]   = new State("1",a_enterInit,MotorOf,defaultFunc);
-    states["Zu"] = new State("2",MotorOf,MotorOf,defaultFunc);
-    states["Auf"] = new State("3",MotorOf,MotorOf,defaultFunc);
-    states["Oeffnen"] = new State("4",doorOpen,doorOpen,defaultFunc);
-    states["Schliessen"] = new State("5",doorClose,doorClose,defaultFunc);
-
-    std::list<Transition*> transitions;
-
-    trlist_automatik.push_back(new Transition (*states["Init"],*states["Zu"],d_ELG));
-    trlist_automatik.push_back(new Transition (*states["Init"],*states["Oeffnen"],d_notEloElg));
-    trlist_automatik.push_back(new Transition (*states["Init"],*states["Auf"],d_ELO));
-    trlist_automatik.push_back(new Transition (*states["Auf"],*states["Auf"],a_NtaLasLsvBm));
-    trlist_automatik.push_back(new Transition (*states["Auf"],*states["Schliessen"],a_Auf_schliessen));
-    trlist_automatik.push_back(new Transition (*states["Oeffnen"],*states["Auf"],d_ELO));
-    trlist_automatik.push_back(new Transition (*states["Oeffnen"],*states["Schliessen"],d_NTZ));
-    trlist_automatik.push_back(new Transition (*states["Schliessen"],*states["Zu"],d_ELG));
-    trlist_automatik.push_back(new Transition (*states["Schliessen"],*states["Oeffnen"],a_NtaLasLsvBm));
-    trlist_automatik.push_back(new Transition (*states["Zu"],*states["Oeffnen"],a_NtaLasLsvBm));
-
-/*
-    Transition tr0(states["Init"],states["Zu"],&d_ELG);
-    Transition tr1(Init,Oeffnen,&d_notEloElg);
-    Transition tr2(Init,Auf,&d_ELO);
-    Transition tr3(Auf,Auf,&a_NtaLasLsvBm);
-    Transition tr4(Auf,Schliessen,&a_Auf_schliessen);
-    Transition tr5(Oeffnen,Auf,&d_ELO);
-    Transition tr6(Oeffnen,Schliessen,&d_NTZ);
-    Transition tr7(Schliessen,Zu,&d_ELG);
-    Transition tr8(Schliessen,Oeffnen,&a_NtaLasLsvBm);
-    Transition tr9(Zu,Oeffnen,&a_NtaLasLsvBm);
-
-    trlist_automatik.push_back(&tr0);
-    trlist_automatik.push_back(&tr1);
-    trlist_automatik.push_back(&tr2);
-    trlist_automatik.push_back(&tr3);
-    trlist_automatik.push_back(&tr4);
-    trlist_automatik.push_back(&tr5);
-    trlist_automatik.push_back(&tr6);
-    trlist_automatik.push_back(&tr7);
-    trlist_automatik.push_back(&tr8);
-    trlist_automatik.push_back(&tr9);
-*/
-
-
-    Automat auto_Automatik(trlist_automatik,*states["Init"]);
-
+    if (!door_real.quit_hardware_flag){
+        door_real.startInterface();
+    }
 
     std::string msg;		// temporary variable to construct message
     unsigned max_count = 20000;	// loop this often
     unsigned delay_ms = 20;		// Milliseconds to wait on one loop
     unsigned int tm = 0;
     //automatik.step();
-    while (!door_if.quit_simulator_flag){
+    iniAutomatik();
+    iniHandbetrieb();
+    iniReparaturmodus();
+    int a=0,h=0,r=0;
 
-        //automatik->step();
-        auto_Automatik.step();
+    while ((!door_if.quit_simulator_flag && door_real.quit_hardware_flag) || (door_if.quit_simulator_flag && !door_real.quit_hardware_flag)){
 
         updateHardwareElements();
 
@@ -134,12 +78,54 @@ void DoorControl::run()
         //01 Reparatur
         //11 Automatik
 
+        int BW1 = handler.sens_list.at(0)->getState();
+        int BW2 = handler.sens_list.at(1)->getState();
+
+
+        if (BW1&&BW2) {
+            if (h==1 || r==1) {
+                automatik->restartAutomat();
+                r=0;
+                h=0;
+            }
+            if (a==0) {
+                handler.akt_list.at(2)->setState(true);
+                updateHardwareElements();
+                usleep(5000*1000); //5s
+                handler.akt_list.at(2)->setState(false);
+                updateHardwareElements();
+            }
+            a=1;
+            automatik->step();
+        }
+        else if (BW1&&!BW2) {
+            if (a==1 || r==1) {
+                handbetrieb->restartAutomat();
+                a=0;
+                r=0;
+            }
+            h=1;
+            handbetrieb->step();
+        }
+        else if (!BW1&&BW2) {
+            if (a==1 || h==1) {
+                reparatur->restartAutomat();
+                a=0;
+                h=0;
+            }
+            r=1;
+            reparatur->step();
+        }
+        else if (!BW1&&!BW2) {
+            d_AktorenOf();
+        }
+
         //TODO if clause Auswahl der Modi
 
 
         //construct counter message
 
-        msg += auto_Automatik.getState()->getName();
+        msg = automatik->getState();
         msg += "press 'q' to quit ";
         msg += std::to_string((int)((delay_ms*tm)/1000));
         msg += " s, timer: ";
@@ -241,128 +227,96 @@ void DoorControl::updateHardwareElements(){
     }
 
 
-
-
 }
 
-
-/*
 
 void DoorControl::iniAutomatik() {
 
+    std::map<std::string, State*> states;
 
+    states["Init"]   = new State("Init",a_enterInit,MotorOf,a_exit);
+    states["Zu"] = new State("Zu",MotorOf,MotorOf,defaultFunc);
+    states["Auf"] = new State("Auf",MotorOf,MotorOf,defaultFunc);
+    states["Oeffnen"] = new State("Oeffnen",doorOpen,doorOpen,defaultFunc);
+    states["Schliessen"] = new State("Schliessen",doorClose,doorClose,defaultFunc);
 
+    std::list<Transition*> transitions;
 
-    State Init(&a_enterInit,&MotorOf,&defaultFunc);
-    State Zu(&MotorOf,&MotorOf,&defaultFunc);
-    State Auf(&MotorOf,&MotorOf,&defaultFunc);
-    State Oeffnen(&doorOpen,&doorOpen,&defaultFunc);
-    State Schliessen(&doorClose,&doorClose,&defaultFunc);
+    trlist_automatik.push_back(new Transition (*states["Init"],*states["Zu"],d_ELG));
+    trlist_automatik.push_back(new Transition (*states["Init"],*states["Oeffnen"],d_notEloElg));
+    trlist_automatik.push_back(new Transition (*states["Init"],*states["Auf"],d_ELO));
+    trlist_automatik.push_back(new Transition (*states["Auf"],*states["Auf"],a_NtaLasLsvBm));
+    trlist_automatik.push_back(new Transition (*states["Auf"],*states["Schliessen"],a_Auf_schliessen));
+    trlist_automatik.push_back(new Transition (*states["Oeffnen"],*states["Auf"],d_ELO));
+    trlist_automatik.push_back(new Transition (*states["Oeffnen"],*states["Schliessen"],d_NTZ));
+    trlist_automatik.push_back(new Transition (*states["Schliessen"],*states["Zu"],d_ELG));
+    trlist_automatik.push_back(new Transition (*states["Schliessen"],*states["Oeffnen"],a_NtaLasLsvBm));
+    trlist_automatik.push_back(new Transition (*states["Zu"],*states["Oeffnen"],a_NtaLasLsvBm));
 
-    Transition tr0(&Init,&Zu,&d_ELG);
-    Transition tr1(&Init,&Oeffnen,&d_notEloElg);
-    Transition tr2(&Init,&Auf,&d_ELO);
-    Transition tr3(&Auf,&Auf,&a_NtaLasLsvBm);
-    Transition tr4(&Auf,&Schliessen,&a_Auf_schliessen);
-    Transition tr5(&Oeffnen,&Auf,&d_ELO);
-    Transition tr6(&Oeffnen,&Schliessen,&d_NTZ);
-    Transition tr7(&Schliessen,&Zu,&d_ELG);
-    Transition tr8(&Schliessen,&Oeffnen,&a_NtaLasLsvBm);
-    Transition tr9(&Zu,&Oeffnen,&a_NtaLasLsvBm);
-
-    trlist_automatik.push_back(&tr0);
-    trlist_automatik.push_back(&tr1);
-    trlist_automatik.push_back(&tr2);
-    trlist_automatik.push_back(&tr3);
-    trlist_automatik.push_back(&tr4);
-    trlist_automatik.push_back(&tr5);
-    trlist_automatik.push_back(&tr6);
-    trlist_automatik.push_back(&tr7);
-    trlist_automatik.push_back(&tr8);
-    trlist_automatik.push_back(&tr9);
-
-
-    Automat auto_Automatik(trlist_automatik,&Init);
-    automatik = auto_Automatik;
+    automatik = new Automat(trlist_automatik,*states["Init"]);
 
 }
- /*
-Automat* DoorControl::iniHandbetrieb() {
-    State Init(&d_AktorenOf,&d_AktorenOf,&defaultFunc);
-    State Zu(&MotorOf,&MotorOf,&defaultFunc);
-    State Auf(&MotorOf,&MotorOf,&defaultFunc);
-    State Oeffnen(&doorOpen,&doorOpen,&defaultFunc);
-    State Schliessen(&doorClose,&doorClose,&defaultFunc);
-    State Stop(&MotorOf,&MotorOf,&defaultFunc);
-    Transition tr0(&Init,&Zu,&d_ELG);
-    Transition tr1(&Init,&Auf,&d_ELO);
-    Transition tr2(&Init,&Stop,&d_notEloElg);
-    Transition tr3(&Zu,&Oeffnen,&d_NTA);
-    Transition tr4(&Oeffnen,&Auf,&d_ELO);
-    Transition tr5(&Oeffnen,&Stop,&d_notNtaNtz);
-    Transition tr6(&Oeffnen,&Oeffnen,&d_NTA);
-    Transition tr7(&Oeffnen,&Schliessen,&d_NTZ);
-    Transition tr8(&Schliessen,&Oeffnen,&d_NTA);
-    Transition tr9(&Schliessen,&Schliessen,&d_NTZ);
-    Transition tr10(&Schliessen,&Zu,&d_ELG);
-    Transition tr12(&Schliessen,&Stop,&d_notNtaNtz);
-    Transition tr11(&Auf,&Schliessen,&d_NTZ);
-    Transition tr13(&Stop,&Schliessen,&d_NTZ);
-    Transition tr14(&Stop,&Oeffnen,&d_NTA);
-    Transition tr15(&Stop,&Stop,&h_Stop_Stop);
-    trlist_handbetrieb.push_back(tr0);
-    trlist_handbetrieb.push_back(tr1);
-    trlist_handbetrieb.push_back(tr2);
-    trlist_handbetrieb.push_back(tr3);
-    trlist_handbetrieb.push_back(tr4);
-    trlist_handbetrieb.push_back(tr5);
-    trlist_handbetrieb.push_back(tr6);
-    trlist_handbetrieb.push_back(tr7);
-    trlist_handbetrieb.push_back(tr8);
-    trlist_handbetrieb.push_back(tr9);
-    trlist_handbetrieb.push_back(tr10);
-    trlist_handbetrieb.push_back(tr11);
-    trlist_handbetrieb.push_back(tr12);
-    trlist_handbetrieb.push_back(tr13);
-    trlist_handbetrieb.push_back(tr14);
-    trlist_handbetrieb.push_back(tr15);
-    Automat auto_Handbetrieb(trlist_handbetrieb,&Init);
-    return &auto_Handbetrieb;
+
+void DoorControl::iniHandbetrieb() {
+
+    std::map<std::string, State*> states;
+
+    states["Init"] = new State ("Init",d_AktorenOf,d_AktorenOf,defaultFunc);
+    states["Zu"] = new State ("Zu",MotorOf,MotorOf,defaultFunc);
+    states["Auf"] = new State ("Auf",MotorOf,MotorOf,defaultFunc);
+    states["Oeffnen"] = new State ("Oeffnen",doorOpen,doorOpen,defaultFunc);
+    states["Schliessen"] = new State ("Schliessen",doorClose,doorClose,defaultFunc);
+    states["Stop"] = new State ("Stop",MotorOf,MotorOf,defaultFunc);
+
+    std::list<Transition*> transitions;
+
+    trlist_handbetrieb.push_back(new Transition (*states["Init"],*states["Zu"],d_ELG));
+    trlist_handbetrieb.push_back(new Transition (*states["Init"],*states["Auf"],d_ELO));
+    trlist_handbetrieb.push_back(new Transition (*states["Init"],*states["Stop"],d_notEloElg));
+    trlist_handbetrieb.push_back(new Transition (*states["Zu"],*states["Oeffnen"],d_NTA));
+    trlist_handbetrieb.push_back(new Transition (*states["Oeffnen"],*states["Auf"],d_ELO));
+    trlist_handbetrieb.push_back(new Transition (*states["Oeffnen"],*states["Stop"],d_notNtaNtz));
+    trlist_handbetrieb.push_back(new Transition (*states["Oeffnen"],*states["Oeffnen"],d_NTA));
+    trlist_handbetrieb.push_back(new Transition (*states["Oeffnen"],*states["Schliessen"],d_NTZ));
+    trlist_handbetrieb.push_back(new Transition (*states["Schliessen"],*states["Oeffnen"],d_NTA));
+    trlist_handbetrieb.push_back(new Transition (*states["Schliessen"],*states["Schliessen"],d_NTZ));
+    trlist_handbetrieb.push_back(new Transition (*states["Schliessen"],*states["Zu"],d_ELG));
+    trlist_handbetrieb.push_back(new Transition (*states["Schliessen"],*states["Stop"],d_notNtaNtz));
+    trlist_handbetrieb.push_back(new Transition (*states["Auf"],*states["Schliessen"],d_NTZ));
+    trlist_handbetrieb.push_back(new Transition (*states["Stop"],*states["Schliessen"],d_NTZ));
+    trlist_handbetrieb.push_back(new Transition (*states["Stop"],*states["Oeffnen"],d_NTA));
+    trlist_handbetrieb.push_back(new Transition (*states["Stop"],*states["Stop"],h_Stop_Stop));
+
+    handbetrieb = new Automat(transitions,*states["Init"]);
+
 }
-Automat* DoorControl::iniReparaturmodus() {
-    State Init(&d_AktorenOf,&d_AktorenOf,&defaultFunc);
-    State Zu(&d_AktorenOf,&d_AktorenOf,&defaultFunc);
-    State Auf(&d_AktorenOf,&d_AktorenOf,&defaultFunc);
-    State Oeffnen(&r_oeffnen,&r_oeffnen,&defaultFunc);
-    State Schliessen(&r_schliessen,&r_schliessen,&defaultFunc);
-    State Stop(&d_AktorenOf,&d_AktorenOf,&defaultFunc);
-    Transition tr0(&Init,&Stop,&d_notEloElg);
-    Transition tr2(&Init,&Auf,&d_ELO);
-    Transition tr3(&Init,&Zu,&d_ELG);
-    Transition tr4(&Stop,&Schliessen,&r_NTZ_notAll);
-    Transition tr5(&Stop,&Stop,&r_Stop_Stop);
-    Transition tr6(&Oeffnen,&Stop,&r_oeffnen_Stop);
-    Transition tr7(&Oeffnen,&Schliessen,&r_NTZ_notAll);
-    Transition tr8(&Oeffnen,&Auf,&d_ELO);
-    Transition tr9(&Auf,&Schliessen,&r_NTZ_notAll);
-    Transition tr10(&Schliessen,&Zu,&d_ELG);
-    Transition tr11(&Schliessen,&Oeffnen,&r_allNotNTZ);
-    Transition tr12(&Schliessen,&Stop,&r_notNTZ);
-    Transition tr13(&Stop,&Stop,&r_Stop_Stop);
-    trlist_reperatur.push_back(tr0);
-    trlist_reperatur.push_back(tr1);
-    trlist_reperatur.push_back(tr2);
-    trlist_reperatur.push_back(tr3);
-    trlist_reperatur.push_back(tr4);
-    trlist_reperatur.push_back(tr5);
-    trlist_reperatur.push_back(tr6);
-    trlist_reperatur.push_back(tr7);
-    trlist_reperatur.push_back(tr8);
-    trlist_reperatur.push_back(tr9);
-    trlist_reperatur.push_back(tr10);
-    trlist_reperatur.push_back(tr11);
-    trlist_reperatur.push_back(tr12);
-    trlist_reperatur.push_back(tr13);
-    Automat auto_Reperaturmodus(trlist_reperatur,&Init);
+void DoorControl::iniReparaturmodus() {
+
+    std::map<std::string, State*> states;
+
+    states["Init"] = new State ("Init",d_AktorenOf,d_AktorenOf,defaultFunc);
+    states["Zu"] = new State ("Zu",d_AktorenOf,d_AktorenOf,defaultFunc);
+    states["Auf"] = new State ("Auf",d_AktorenOf,d_AktorenOf,defaultFunc);
+    states["Oeffnen"] = new State ("Oeffnen",r_oeffnen,r_oeffnen,defaultFunc);
+    states["Schliessen"] = new State ("Schliessen",r_schliessen,r_schliessen,defaultFunc);
+    states["Stop"] = new State ("Stop",d_AktorenOf,d_AktorenOf,defaultFunc);
+
+    std::list<Transition*> transitions;
+
+    trlist_reparatur.push_back(new Transition (*states["Init"],*states["Stop"],d_notEloElg));
+    trlist_reparatur.push_back(new Transition (*states["Init"],*states["Auf"],d_ELO));
+    trlist_reparatur.push_back(new Transition (*states["Init"],*states["Zu"],d_ELG));
+    trlist_reparatur.push_back(new Transition (*states["Stop"],*states["Schliessen"],r_NTZ_notAll));
+    trlist_reparatur.push_back(new Transition (*states["Stop"],*states["Stop"],r_Stop_Stop));
+    trlist_reparatur.push_back(new Transition (*states["Oeffnen"],*states["Stop"],r_oeffnen_Stop));
+    trlist_reparatur.push_back(new Transition (*states["Oeffnen"],*states["Schliessen"],r_NTZ_notAll));
+    trlist_reparatur.push_back(new Transition (*states["Oeffnen"],*states["Auf"],d_ELO));
+    trlist_reparatur.push_back(new Transition (*states["Auf"],*states["Schliessen"],r_NTZ_notAll));
+    trlist_reparatur.push_back(new Transition (*states["Schliessen"],*states["Zu"],d_ELG));
+    trlist_reparatur.push_back(new Transition (*states["Schliessen"],*states["Oeffnen"],r_allNotNTZ));
+    trlist_reparatur.push_back(new Transition (*states["Schliessen"],*states["Stop"],r_notNTZ));
+    trlist_reparatur.push_back(new Transition (*states["Stop"],*states["Stop"],r_Stop_Stop));
+
+    reparatur = new Automat(transitions,*states["Init"]);
+
 }
-*/

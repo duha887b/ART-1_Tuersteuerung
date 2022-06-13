@@ -40,16 +40,16 @@ private:
     unsigned char port1;
     unsigned char port2 = 0;
 
-    //Automat ptr_handbetrieb;
-    Automat ptr_reparatur;
-    Automat automatik ;
+    Automat* handbetrieb;
+    Automat* reparatur;
+    Automat* automatik ;
 
-    Automat* iniHandbetrieb();
-    Automat* iniReparaturmodus();
+    void iniHandbetrieb();
+    void iniReparaturmodus();
     void iniAutomatik();
 
     std::list<Transition*>trlist_handbetrieb;
-    std::list<Transition*>trlist_reperatur;
+    std::list<Transition*>trlist_reparatur;
     std::list<Transition*>trlist_automatik;
 
    // AutomatFunction AutoFunction;

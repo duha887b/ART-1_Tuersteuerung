@@ -1,3 +1,3 @@
 main.o: main.cpp DoorControl.h Simulator.h Sensor.h HardwareElement.h \
  Aktor.h Automat.h State.h Behaviour.h Transition.h config_handler.h \
- AutomatFunction.h
+ AutomatFunction.h HardwareInterface.h UserInterface.h

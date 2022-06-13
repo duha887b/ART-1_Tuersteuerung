@@ -49,9 +49,9 @@ void doorClose(){
 void doorOpen(){
     //Y1,!Y2
 
-    while (true) {
+/*    while (true) {
         std::cout << 32 << std::endl;
-    }
+    }*/
 
     handler.akt_list.at(0)->setState(true);
     handler.akt_list.at(1)->setState(false);

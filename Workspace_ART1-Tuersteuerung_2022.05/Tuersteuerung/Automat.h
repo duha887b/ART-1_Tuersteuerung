@@ -25,7 +25,7 @@ public:
     Automat();
 	void step();
     void restartAutomat();
-    const State* getState();
+    string getState();
 
 
 };

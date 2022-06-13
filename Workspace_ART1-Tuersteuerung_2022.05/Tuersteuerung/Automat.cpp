@@ -14,8 +14,7 @@ Automat::Automat() {
 }
 
 Automat::Automat(std::list<Transition*> tr, State& fs): tr(tr),currentState(&fs),first(true){
-	//firstState=fs;
-	//first=true;
+
 }
 
 
@@ -23,8 +22,8 @@ void Automat::restartAutomat() {
     first = true;
 }
 
-const State* Automat::getState() {
-    return currentState;
+string Automat::getState() {
+    return currentState->name;
 }
 
 void Automat::step(){

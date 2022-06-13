@@ -11,6 +11,6 @@ State::State(const string id,Action enterFunc, Action stayFunc, Action exitFunc)
 }
 
 
-string State::getName() {
+const string State::getName() {
     return name;
 }

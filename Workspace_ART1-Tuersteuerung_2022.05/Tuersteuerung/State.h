@@ -14,14 +14,14 @@ using namespace std;
 
 class State{
 private:
-    const string name;
+
 
 public:
 	Action enterFunc, stayFunc, exitFunc;
-
+    const string name;
     State(const string id, Action enterFunc, Action stayFunc, Action exitFunc);
 
-    string getName();
+    const string getName();
 
 
 
