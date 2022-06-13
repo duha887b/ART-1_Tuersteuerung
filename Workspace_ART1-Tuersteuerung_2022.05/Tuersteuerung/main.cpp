@@ -16,7 +16,7 @@ int main (int argc, char *argv[])
 
     DoorControl control;
     control.run();
-
+    
 
     return 0;
 }

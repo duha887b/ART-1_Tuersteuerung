@@ -73,6 +73,7 @@ bool d_notEloElg(){ //a_Init_öffnen,h_Init_Stop
 }
 
 bool d_ELG(){ //a_Init_Zu,h_Init_Zu,a_schliessen_oeffnen
+
     return handler.sens_list.at(6)->getState();//ELG
 }
 

@@ -17,6 +17,7 @@
 #include "State.h"
 #include "Transition.h"
 #include <vector>
+#include <map>
 #include "AutomatFunction.h"
 
 
@@ -60,13 +61,35 @@ void DoorControl::run()
 
 
 
-    State Init(&a_enterInit,&MotorOf,&defaultFunc);
+/*    State Init(&a_enterInit,&MotorOf,&defaultFunc);
     State Zu(&MotorOf,&MotorOf,&defaultFunc);
     State Auf(&MotorOf,&MotorOf,&defaultFunc);
     State Oeffnen(&doorOpen,&doorOpen,&defaultFunc);
-    State Schliessen(&doorClose,&doorClose,&defaultFunc);
+    State Schliessen(&doorClose,&doorClose,&defaultFunc);*/
 
-    Transition tr0(Init,Zu,&d_ELG);
+    std::map<std::string, State*> states;
+
+    states["Init"]   = new State("1",a_enterInit,MotorOf,defaultFunc);
+    states["Zu"] = new State("2",MotorOf,MotorOf,defaultFunc);
+    states["Auf"] = new State("3",MotorOf,MotorOf,defaultFunc);
+    states["Oeffnen"] = new State("4",doorOpen,doorOpen,defaultFunc);
+    states["Schliessen"] = new State("5",doorClose,doorClose,defaultFunc);
+
+    std::list<Transition*> transitions;
+
+    trlist_automatik.push_back(new Transition (*states["Init"],*states["Zu"],d_ELG));
+    trlist_automatik.push_back(new Transition (*states["Init"],*states["Oeffnen"],d_notEloElg));
+    trlist_automatik.push_back(new Transition (*states["Init"],*states["Auf"],d_ELO));
+    trlist_automatik.push_back(new Transition (*states["Auf"],*states["Auf"],a_NtaLasLsvBm));
+    trlist_automatik.push_back(new Transition (*states["Auf"],*states["Schliessen"],a_Auf_schliessen));
+    trlist_automatik.push_back(new Transition (*states["Oeffnen"],*states["Auf"],d_ELO));
+    trlist_automatik.push_back(new Transition (*states["Oeffnen"],*states["Schliessen"],d_NTZ));
+    trlist_automatik.push_back(new Transition (*states["Schliessen"],*states["Zu"],d_ELG));
+    trlist_automatik.push_back(new Transition (*states["Schliessen"],*states["Oeffnen"],a_NtaLasLsvBm));
+    trlist_automatik.push_back(new Transition (*states["Zu"],*states["Oeffnen"],a_NtaLasLsvBm));
+
+/*
+    Transition tr0(states["Init"],states["Zu"],&d_ELG);
     Transition tr1(Init,Oeffnen,&d_notEloElg);
     Transition tr2(Init,Auf,&d_ELO);
     Transition tr3(Auf,Auf,&a_NtaLasLsvBm);
@@ -87,9 +110,10 @@ void DoorControl::run()
     trlist_automatik.push_back(&tr7);
     trlist_automatik.push_back(&tr8);
     trlist_automatik.push_back(&tr9);
+*/
 
 
-    Automat auto_Automatik(trlist_automatik,Init);
+    Automat auto_Automatik(trlist_automatik,*states["Init"]);
 
 
     std::string msg;		// temporary variable to construct message
@@ -114,7 +138,8 @@ void DoorControl::run()
 
 
         //construct counter message
-        msg = std::to_string(d_notEloElg());
+
+        msg += auto_Automatik.getState()->getName();
         msg += "press 'q' to quit ";
         msg += std::to_string((int)((delay_ms*tm)/1000));
         msg += " s, timer: ";

@@ -6,9 +6,11 @@
  */
 #include "State.h"
 
-State::State(Action enterFunc, Action stayFunc, Action exitFunc):enterFunc(enterFunc), stayFunc(stayFunc), exitFunc(exitFunc){
+State::State(const string id,Action enterFunc, Action stayFunc, Action exitFunc): name(id),enterFunc(enterFunc), stayFunc(stayFunc), exitFunc(exitFunc){
 
 }
 
 
-
+string State::getName() {
+    return name;
+}

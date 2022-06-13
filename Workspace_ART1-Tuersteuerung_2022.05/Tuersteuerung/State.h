@@ -9,17 +9,19 @@
 #define STATE_H_
 
 #include "Behaviour.h"
+#include <string>
+using namespace std;
 
 class State{
 private:
-
-
-
+    const string name;
 
 public:
 	Action enterFunc, stayFunc, exitFunc;
 
-    State(Action enterFunc, Action stayFunc, Action exitFunc);
+    State(const string id, Action enterFunc, Action stayFunc, Action exitFunc);
+
+    string getName();
 
 
 
