@@ -29,6 +29,9 @@
     void doorOpen();
     void d_AktorenOf();
 
+    void a_exit();
+
+
     bool d_ELO();
     bool d_notEloElg();
     bool d_ELG();

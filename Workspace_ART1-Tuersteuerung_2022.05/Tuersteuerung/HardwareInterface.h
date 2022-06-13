@@ -18,6 +18,7 @@ class HardwareInterface {
     ~HardwareInterface(void);
     void DIO_Read(const unsigned port, unsigned char *pins);
     void DIO_Write(const unsigned port, const unsigned char pins);
+    void startInterface();
 
 private:
     struct usb_device *dev;

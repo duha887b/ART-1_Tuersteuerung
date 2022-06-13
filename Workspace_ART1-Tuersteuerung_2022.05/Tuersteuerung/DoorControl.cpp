@@ -25,8 +25,11 @@
 DoorControl::DoorControl() : door_if(true) ,
                              opMode(0),
                              handler(),
-                             automatik()
-
+                             automatik(),
+                             handbetrieb(),
+                             reparatur(),
+                             ui(),
+                             door_real()
 
                              //AutoFunction(handler)
 
@@ -37,6 +40,9 @@ DoorControl::DoorControl() : door_if(true) ,
     //Temp ini später durch config handle
     handler.run();
     getHandler(handler);
+    door_real.quit_hardware_flag=true;
+    ui.quit_ui_flag=true;
+    door_if.quit_simulator_flag=false;
 
 
 
@@ -159,12 +165,16 @@ void DoorControl::updateHardwareElements(){
 
 
 
-    if(true) {// bedingung für Simulator
+    if(!door_if.quit_simulator_flag) {// bedingung für Simulator
 
         door_if.DIO_Read(0,&port0);
         door_if.DIO_Read(1,&port1);
 
+    }else if (!door_real.quit_hardware_flag){
+        door_real.DIO_Read(0,&port0);
+        door_real.DIO_Read(1,&port1);
     }
+
     for (int i = 0; i < 15; i++) { // daten port1 auf pin states schreiben
         if (i<8){
             handler.sens_list.at(i)->setState((port0 >> i) & 1);
@@ -218,12 +228,12 @@ void DoorControl::updateHardwareElements(){
     }
 
 
+    if(!door_if.quit_simulator_flag) {// bedingung für Simulator
 
-
-
-    if(true){//TODO bedingung für insatnz
         door_if.DIO_Write(2,port2);
 
+    }else if (!door_real.quit_hardware_flag){
+        door_real.DIO_Write(2,port2);
     }
 
 

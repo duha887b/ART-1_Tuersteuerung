@@ -14,7 +14,14 @@ std::atomic<bool> HardwareInterface::quit_hardware_flag(false);
 
 HardwareInterface::HardwareInterface()
 {
+}
 
+HardwareInterface::~HardwareInterface(void)
+{
+
+}
+
+void HardwareInterface::startInterface(){
     if( niusb6501_list_devices(&dev, 1) != 1) {
         throw std::runtime_error("Device not found");
     }
@@ -23,11 +30,6 @@ HardwareInterface::HardwareInterface()
         throw std::runtime_error("Unable to open the USB device");
     }
     niusb6501_set_io_mode(handle, 0x03, 0x00, 0xFF);
-}
-
-HardwareInterface::~HardwareInterface(void)
-{
-
 }
 
 void HardwareInterface::DIO_Read(const unsigned port, unsigned char *pins)

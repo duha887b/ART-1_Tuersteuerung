@@ -23,9 +23,6 @@ unsigned int stateT = 0;
 
 void getHandler(config_handler hl){
     handler = hl;
-   /* while (true) {
-        std::cout << hl.sens_list.at(0)->getState() << std::endl;
-    }*/
 }
 
 void stepTimer(unsigned int delay_ms) {
@@ -111,10 +108,17 @@ void a_enterInit(){
     //!Y1,!Y2,Y3
     MotorOf();
     handler.akt_list.at(2)->setState(true);
-    /*unsigned int delay = 5000;
-    usleep(delay * 1000);
+    stateT = 0;
+    d_AktorenOf();
+
     //!Y3
-    handler.akt_list.at(2)->setState(false);*/
+
+}
+
+void a_exit(){
+
+    d_AktorenOf();
+
 }
 
 void a_enterAuf(){

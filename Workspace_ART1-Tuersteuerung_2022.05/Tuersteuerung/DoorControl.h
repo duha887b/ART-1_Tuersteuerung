@@ -20,6 +20,8 @@
 #include "config_handler.h"
 #include <vector>
 #include "AutomatFunction.h"
+#include "HardwareInterface.h"
+#include "UserInterface.h"
 
 
 
@@ -31,7 +33,11 @@ public:
 private:
 
     void updateHardwareElements();
+
     Simulator door_if;
+    HardwareInterface door_real;
+    UserInterface ui;
+
     config_handler handler;
 
 
