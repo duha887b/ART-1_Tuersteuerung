@@ -6,7 +6,7 @@
  */
 #include  "Transition.h"
 
-Transition::Transition(State* start, State* end, Condition bed):startState(start), endState(end), bedingung(bed){
+Transition::Transition(const State& start,const State& end, Condition bed):startState(start), endState(end), bedingung(bed){
 
 
 }

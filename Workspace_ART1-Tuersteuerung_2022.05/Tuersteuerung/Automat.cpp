@@ -13,9 +13,9 @@ Automat::Automat() {
 
 }
 
-Automat::Automat(std::list<Transition*> tr, State *fs):tr(tr){
-	firstState=fs;
-	first=true;
+Automat::Automat(std::list<Transition*> tr, State& fs):tr(tr),currentState(fs),first(true){
+	//firstState=fs;
+	//first=true;
 }
 
 
@@ -28,12 +28,12 @@ void Automat::step(){
 
 
 	if (first){
-		firstState->enterFunc();
+		currentState.enterFunc();
 		first=false;
 	}
 
 
-	for (std::list<Transition*>::const_iterator i = tr.begin(); i != tr.end();i++){
+	for (std::list<Transition *>::const_iterator i = tr.begin(); i != tr.end();i++){
 
 		Transition *t = *(i);
 		if(t->startState == currentState){
@@ -49,6 +49,6 @@ void Automat::step(){
 
 
 	}
-	firstState->stayFunc();
+	currentState->stayFunc();
 
 }

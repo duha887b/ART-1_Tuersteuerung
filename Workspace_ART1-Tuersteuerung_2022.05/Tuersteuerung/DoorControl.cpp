@@ -89,7 +89,7 @@ void DoorControl::run()
     trlist_automatik.push_back(&tr9);
 
 
-    Automat auto_Automatik(trlist_automatik,&Init);
+    Automat auto_Automatik(trlist_automatik,Init);
 
 
     std::string msg;		// temporary variable to construct message

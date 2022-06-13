@@ -61,10 +61,6 @@ void Test ()
 	tempAutomat.step();
 	tempAutomat.step();
 
-
-
-
-
 }
 
 

@@ -16,12 +16,12 @@ class Automat{
 
 private:
 	std::list<Transition*>tr;
-	State* firstState;
+	const State& currentState;
 	bool first;
 
 public:
 
-    Automat(std::list<Transition*> tr, State* fs);
+    Automat(std::list<Transition*> tr, State& fs);
     Automat();
 	void step();
     void restartAutomat();

@@ -19,7 +19,7 @@ private:
 public:
 	Action enterFunc, stayFunc, exitFunc;
 
-State(Action enterFunc, Action stayFunc, Action exitFunc);
+    State(Action enterFunc, Action stayFunc, Action exitFunc);
 
 
 

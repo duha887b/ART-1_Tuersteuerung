@@ -15,10 +15,10 @@ private:
 
 
 public:
-	State* startState;
-	State* endState;
+	const State& startState;
+	const State& endState;
 	Condition bedingung;
-	Transition (State* start, State* end, Condition bed);
+	Transition (const State& start, const State& end, Condition bed);
 
 
 };
