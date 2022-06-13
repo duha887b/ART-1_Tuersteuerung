@@ -48,6 +48,11 @@ void doorClose(){
 }
 void doorOpen(){
     //Y1,!Y2
+
+    while (true) {
+        std::cout << 32 << std::endl;
+    }
+
     handler.akt_list.at(0)->setState(true);
     handler.akt_list.at(1)->setState(false);
 }
@@ -62,6 +67,7 @@ bool d_ELO(){ // a_Init_Auf,h_Init_Auf
 }
 
 bool d_notEloElg(){ //a_Init_öffnen,h_Init_Stop
+
 
     return !(handler.sens_list.at(4)->getState()) && !(handler.sens_list.at(6)->getState()) ; //!ELO && !ELG
 }

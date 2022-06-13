@@ -12,7 +12,7 @@ Init --> ZU : ELG
 Init --> AUF : ELO
 Init -right-> STOP : !ELO && !ELG
 
-ZU --> öffnen : !NTZ &&\n (NTA || LSH || LSV || BW)
+ZU --> öffnen : !NTZ \n (NTA || LSH || LSV || BW)
 
 öffnen --> STOP : !NTZ && !NTA && !LSH &&\n !LSV && !BW
 öffnen --> schließen : NTZ && !NTA && !LSH &&\n !LSV && !BW

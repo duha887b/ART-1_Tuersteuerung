@@ -35,13 +35,13 @@ void Automat::step(){
 
 	for (std::list<Transition*>::const_iterator i = tr.begin(); i != tr.end();i++){
 
-		Transition* t = *(i);
-		if(t->startState == firstState){
+		Transition *t = *(i);
+		if(t->startState == currentState){
 
-			if(t->bedingung){
-				firstState->exitFunc();
-				firstState = t->endState;
-				firstState->enterFunc();
+			if(t->bedingung()){
+				currentState.exitFunc();
+				currentState = t->endState;
+				currentState.enterFunc();
 				return;
 			}
 

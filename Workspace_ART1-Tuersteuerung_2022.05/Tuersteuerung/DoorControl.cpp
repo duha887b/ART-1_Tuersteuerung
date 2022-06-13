@@ -66,16 +66,16 @@ void DoorControl::run()
     State Oeffnen(&doorOpen,&doorOpen,&defaultFunc);
     State Schliessen(&doorClose,&doorClose,&defaultFunc);
 
-    Transition tr0(&Init,&Zu,&d_ELG);
-    Transition tr1(&Init,&Oeffnen,&d_notEloElg);
-    Transition tr2(&Init,&Auf,&d_ELO);
-    Transition tr3(&Auf,&Auf,&a_NtaLasLsvBm);
-    Transition tr4(&Auf,&Schliessen,&a_Auf_schliessen);
-    Transition tr5(&Oeffnen,&Auf,&d_ELO);
-    Transition tr6(&Oeffnen,&Schliessen,&d_NTZ);
-    Transition tr7(&Schliessen,&Zu,&d_ELG);
-    Transition tr8(&Schliessen,&Oeffnen,&a_NtaLasLsvBm);
-    Transition tr9(&Zu,&Oeffnen,&a_NtaLasLsvBm);
+    Transition tr0(Init,Zu,&d_ELG);
+    Transition tr1(Init,Oeffnen,&d_notEloElg);
+    Transition tr2(Init,Auf,&d_ELO);
+    Transition tr3(Auf,Auf,&a_NtaLasLsvBm);
+    Transition tr4(Auf,Schliessen,&a_Auf_schliessen);
+    Transition tr5(Oeffnen,Auf,&d_ELO);
+    Transition tr6(Oeffnen,Schliessen,&d_NTZ);
+    Transition tr7(Schliessen,Zu,&d_ELG);
+    Transition tr8(Schliessen,Oeffnen,&a_NtaLasLsvBm);
+    Transition tr9(Zu,Oeffnen,&a_NtaLasLsvBm);
 
     trlist_automatik.push_back(&tr0);
     trlist_automatik.push_back(&tr1);
@@ -114,7 +114,7 @@ void DoorControl::run()
 
 
         //construct counter message
-        msg = std::to_string(!(handler.sens_list.at(4)->getState()) && !(handler.sens_list.at(6)->getState()));
+        msg = std::to_string(d_notEloElg());
         msg += "press 'q' to quit ";
         msg += std::to_string((int)((delay_ms*tm)/1000));
         msg += " s, timer: ";
