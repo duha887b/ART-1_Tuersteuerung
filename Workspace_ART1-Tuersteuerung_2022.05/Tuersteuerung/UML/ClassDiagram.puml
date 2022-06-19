@@ -1,7 +1,6 @@
 @startuml
 class DoorInterface{
 
-
 const bool real_door
 const bool show_ui
 
@@ -14,33 +13,55 @@ struct usb_dev_handle *handle
 int channels
 int sim_channels
 
+DoorInterface(bool real_door=false, bool show_ui=true)
 void HandleSimUI(void)
 void InitNcurses(void)
 void ShowSimUI(void)
 void HandleSimInput(int c)
-
 void DebugString(const std::string s)
 void DIO_Write(const unsigned port, const unsigned char pins)
 void DIO_Read(const unsigned port, unsigned char *pins)
 
- * TODO aufteilen auf mehrere Klassen um Oberfläche, Simulator und Hardware-Interface klar zu trennen
- * TODO Interrupt-Timer implementieren
 
 }
 
 class DoorControl {
 
 DoorInterface door_if
+config_handler handler
 
+Automat* handbetrieb;
+Automat* reparatur;
+Automat* automatik
+
+unsigned char opMode
+unsigned char port0
+unsigned char port1
+unsigned char port2
+
+std::list<Transition*>trlist_handbetrieb;
+std::list<Transition*>trlist_reparatur;
+std::list<Transition*>trlist_automatik;
+
+DoorControl()
 void run()
-*TODO insert your main loop here ...
+void iniHandbetrieb();
+void iniReparaturmodus();
+void iniAutomatik();
 
-*TODO maybe, insert your sensor and actor initialization here?
 
 }
- class ConfigHandler_Singelton {
+ class config_handler {
 
-HardwareElement[] elemente
+ std::vector<Aktor*> akt_list
+ std::vector<Sensor*> sens_list
+
+
+
+ config_handler();
+ void run()
+ std::vector<Aktor*> get_akt_list()
+ std::vector<Sensor*> get_sens_list()
 
 
 }
@@ -49,8 +70,14 @@ class HardwareElement{
 
 bool state
 unsigned int pin
+unsigned int port
 
-bool getState()
+
+HardwareElement(unsigned int port, unsigned int pin, bool state)
+virtual bool getState()
+void setState(bool pin)
+unsigned int getPort()
+unsigned int getPin()
 
 
 }
@@ -59,50 +86,127 @@ class Sensor {
 
 bool opMode
 
-bool getOpMode
+explicit Sensor(unsigned int port, unsigned int pin, bool state,bool opMode)
+bool getOpMode()
+void setOpMode(bool Mode)
+bool getState()
 
 }
 
 class Aktor{
 
-void setState()
+explicit Aktor(unsigned int port, unsigned int pin, bool state)
 
 }
 
 
 class Automat {
 
-state currentState
+const std::list<Transition*>tr
+const State* currentState
+bool first
 
+Automat(const std::list<Transition*> tr, State& fs)
+Automat()
 void step()
+void restartAutomat()
+string getState()
 
 
 }
 
-class AutomatElement{
 
-}
 
 class State{
+Action enterFunc, stayFunc, exitFunc
+const string name
 
+State(const string id, Action enterFunc, Action stayFunc, Action exitFunc)
+const string getName()
 }
 
 class Transition{
 
+const State& startState
+const State& endState
+Condition bedingung
+Transition (const State& start, const State& end, Condition bed)
+
 }
 
+annotation Behaviour{
+typedef void (*Action) (void)
+typedef bool (*Condition) (void)
+}
 
-DoorInterface <|-- DoorControl
-AutomatElement <|-- Automat
-AutomatElement <|-- State
-AutomatElement <|-- Transition
-HardwareElement <|-- Sensor
-HardwareElement <|-- Aktor
+annotation AutomatFunction{
 
+void stepTimer(unsigned int delay_ms)
+void getHandler(config_handler hl)
+void defaultFunc()
+void MotorOf()
+void doorClose()
+void doorOpen()
+void d_AktorenOf()
+void a_exit()
+void a_enterInit()
+void a_enterAuf()
+void r_schliessen()
+void r_oeffnen()
+
+bool d_ELO()
+bool d_notEloElg()
+bool d_ELG()
+bool d_NTZ()
+bool d_NTA()
+bool d_notNtaNtz()
+bool a_NtaLasLsvBm()
+bool a_Auf_schliessen()
+bool h_Stop_Stop()
+bool r_notNTZ()
+bool r_Stop_Stop()
+bool r_oeffnen_Stop()
+bool r_allNotNTZ()
+bool r_NTZ_notAll()
+
+
+}
+
+annotation niusb6501{
+extern size_t niusb6501_list_devices(struct usb_device *devices[], size_t size)
+extern struct usb_dev_handle *niusb6501_open_device(struct usb_device *device)
+extern int niusb6501_close_device(struct usb_dev_handle *handle)
+extern int niusb6501_read_port(struct usb_dev_handle *handle, unsigned char port, unsigned char *value)
+extern int niusb6501_write_port(struct usb_dev_handle *handle, unsigned char port, unsigned char value)
+extern int niusb6501_set_io_mode(struct usb_dev_handle *handle, unsigned char port0, unsigned char port1, unsigned char port2)
+}
+
+DoorInterface ..|> niusb6501
+
+DoorControl ..|> DoorInterface
+DoorControl ..|> Sensor
+DoorControl ..|> Aktor
+DoorControl ..|> Transition
+DoorControl ..|> State
 DoorControl ..|> Automat
-DoorControl ..|> AutomatElement
-DoorControl ..|> ConfigHandler_Singelton
-ConfigHandler_Singelton ..|> HardwareElement
+DoorControl ..|> config_handler
+DoorControl ..|> AutomatFunction
+
+Aktor --|> HardwareElement
+Sensor --|> HardwareElement
+
+Automat ..|> Transition
+Automat ..|> State
+
+State ..|> Behaviour
+
+Transition ..|> Behaviour
+Transition ..|> State
+
+config_handler ..|> Sensor
+config_handler ..|> Aktor
+
+
 
 
 
