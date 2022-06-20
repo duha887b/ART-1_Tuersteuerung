@@ -2,21 +2,21 @@
 hide empty description
 
 [*] --> Ausgeschaltet
-Ausgeschaltet  -right-> Reperatur : <!BW1;BW2>
+Ausgeschaltet  -right-> Reparatur : <!BW1;BW2>
 Ausgeschaltet  -down-> Automatik : <BW1;BW2>
 Ausgeschaltet  -down-> Handbetrieb : <BW1;!BW2>
 
 
-Ausgeschaltet  <- Reperatur : <!BW1;!BW2>
+Ausgeschaltet  <- Reparatur : <!BW1;!BW2>
 Ausgeschaltet  <- Handbetrieb : <!BW1;!BW2>
 Ausgeschaltet  <- Automatik : <!BW1;!BW2>
 
-Reperatur --> Automatik : <BW1;BW2>
-Reperatur -left-> Handbetrieb : <BW1;!BW2>
+Reparatur --> Automatik : <BW1;BW2>
+Reparatur -left-> Handbetrieb : <BW1;!BW2>
 
 
-Reperatur <- Automatik : <!BW1;BW2>
-Reperatur <- Handbetrieb : <!BW1;BW2>
+Reparatur <- Automatik : <!BW1;BW2>
+Reparatur <- Handbetrieb : <!BW1;BW2>
 
 Automatik --> Handbetrieb : <BW1;!BW2>
 
